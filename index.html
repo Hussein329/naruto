@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Habits Lab — Notion &amp; Sheets Habit Tracking Systems</title>
+<meta name="description" content="The Habits Lab builds habit-tracking systems in three tiers — a free-feeling Notion starter, an analytics-driven Sheets suite, and a gamified Deluxe ecosystem.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark">🧪</span>
+      <span class="brand-text">THE HABITS LAB</span>
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="#tiers">Tiers</a>
+      <a href="#compare">Compare</a>
+      <a href="#plan">Build Plan</a>
+      <a href="#philosophy">Philosophy</a>
+    </nav>
+    <a class="nav-cta" href="#tiers">Get a Tracker</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <p class="eyebrow"><span class="dot"></span> Systems for people who track things</p>
+      <h1>Habits are a system.<br>We just built <span class="accent">three of them.</span></h1>
+      <p class="hero-sub">
+        From a $5 Notion starter to a fully gamified XP-and-quests ecosystem —
+        pick the level of ceremony your habits deserve.
+      </p>
+      <div class="hero-actions">
+        <a href="#tiers" class="btn btn-primary">See the three tiers</a>
+        <a href="#plan" class="btn btn-ghost">View the build log</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">3</span><span class="stat-label">Tiers</span></div>
+        <div class="stat"><span class="stat-num">21</span><span class="stat-label">Day build</span></div>
+        <div class="stat"><span class="stat-num">$5–$67</span><span class="stat-label">Price range</span></div>
+        <div class="stat"><span class="stat-num">2</span><span class="stat-label">Tools: Notion + Sheets</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIERS -->
+  <section id="tiers" class="section">
+    <div class="wrap">
+      <h2 class="section-title">Choose your tier</h2>
+      <p class="section-sub">Same core idea — track a habit, see the streak — three very different levels of depth.</p>
+
+      <div class="tier-grid">
+
+        <!-- TIER 1 -->
+        <article class="tier-card tier-1">
+          <div class="tier-head">
+            <span class="tier-kicker">Tier 1 · Basic</span>
+            <h3>Minimal Notion Tracker</h3>
+            <div class="tier-price">$5<span>–</span>$10</div>
+            <span class="tool-badge">Built in Notion</span>
+          </div>
+          <p class="tier-desc">A clean, duplicable template. Fast to build, cheap to buy, and the trust-builder that funnels people into Tier 2 and 3.</p>
+          <ul class="tier-features">
+            <li>7-day checkbox grid (Mon–Sun) per habit</li>
+            <li>Optional Category select field</li>
+            <li>Manual streak counter — honest, not fragile</li>
+            <li>Weekly summary view with % complete rollup</li>
+            <li>One accent colour, grayscale icons</li>
+            <li>One-click "duplicate as template" delivery</li>
+          </ul>
+          <div class="tier-meta">
+            <span>⏱ 3–5 hr build</span>
+            <span>🚀 Ships Day 3</span>
+          </div>
+        </article>
+
+        <!-- TIER 2 -->
+        <article class="tier-card tier-2 tier-featured">
+          <span class="featured-tag">Most screenshot-worthy</span>
+          <div class="tier-head">
+            <span class="tier-kicker">Tier 2 · Premium</span>
+            <h3>Aesthetic Analytics Suite</h3>
+            <div class="tier-price">$19<span>–</span>$29</div>
+            <span class="tool-badge">Built in Google Sheets</span>
+          </div>
+          <p class="tier-desc">A real dashboard, not just a grid. Buyers screenshot the charts and post them — that's the whole marketing engine.</p>
+          <ul class="tier-features">
+            <li>Dashboard, Daily Log, Monthly Review, Settings tabs</li>
+            <li>Line chart of monthly consistency trend</li>
+            <li>Bar chart of completion rate by category</li>
+            <li>Mood/Energy vs. completion, with real <code>=CORREL()</code></li>
+            <li>Inline <code>=SPARKLINE()</code> mini progress bars</li>
+            <li>Auto-pulled top/bottom habits via <code>=SORT()</code> / <code>=QUERY()</code></li>
+            <li>Protected formula ranges — buyers can't break it</li>
+          </ul>
+          <div class="tier-meta">
+            <span>⏱ 8–14 hr build</span>
+            <span>🚀 Ships Day 10</span>
+          </div>
+        </article>
+
+        <!-- TIER 3 -->
+        <article class="tier-card tier-3">
+          <div class="tier-head">
+            <span class="tier-kicker">Tier 3 · Deluxe</span>
+            <h3>Gamified RPG Ecosystem</h3>
+            <div class="tier-price">$47<span>–</span>$67</div>
+            <span class="tool-badge">Notion + PDF/Video</span>
+          </div>
+          <p class="tier-desc">Habits reskinned as a game: quests, XP, levels, and a boss-goal map. Notion and good formulas, not custom software.</p>
+          <ul class="tier-features">
+            <li>Character Sheet — Level, XP bar, streak "health bar"</li>
+            <li>Daily Quests — habits with XP values</li>
+            <li>Goal Map — quests → milestones → Boss Goals via relations</li>
+            <li>Time-Block Planner calendar view</li>
+            <li>Level = <code>floor(Total XP / 100)</code>, visual XP bar</li>
+            <li>Badge gallery, unlocked by XP threshold</li>
+            <li>Licensed custom icon pack</li>
+            <li>15–25 pg guidebook or 15–20 min walkthrough video</li>
+          </ul>
+          <div class="tier-meta">
+            <span>⏱ 20–35 hr build</span>
+            <span>🚀 Ships Day 21</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARE -->
+  <section id="compare" class="section section-alt">
+    <div class="wrap">
+      <h2 class="section-title">Side by side</h2>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>&nbsp;</th>
+              <th>Tier 1 · Basic</th>
+              <th>Tier 2 · Premium</th>
+              <th>Tier 3 · Deluxe</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Price</td><td>$5–$10</td><td>$19–$29</td><td>$47–$67</td></tr>
+            <tr><td>Tool</td><td>Notion</td><td>Google Sheets</td><td>Notion + PDF/Video</td></tr>
+            <tr><td>Build time</td><td>3–5 hrs</td><td>8–14 hrs</td><td>20–35 hrs</td></tr>
+            <tr><td>Ships</td><td>Day 3</td><td>Day 10</td><td>Day 21</td></tr>
+            <tr><td>Streak tracking</td><td>Manual counter</td><td>Chart-driven trend</td><td>XP + level system</td></tr>
+            <tr><td>Analytics</td><td>Basic % complete</td><td>Correlation, sparklines, category breakdown</td><td>XP rollups, quest progress</td></tr>
+            <tr><td>Visual identity</td><td>One accent colour</td><td>Full palette + typography pass</td><td>Custom licensed icon pack</td></tr>
+            <tr><td>Extras</td><td>—</td><td>Protected formula cells</td><td>Badges, guidebook/video, Boss Goals</td></tr>
+            <tr><td>Best for</td><td>Trying the system out</td><td>People who like data</td><td>People who need a game to stay consistent</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUILD PLAN -->
+  <section id="plan" class="section">
+    <div class="wrap">
+      <h2 class="section-title">The 21-day build &amp; launch plan</h2>
+      <p class="section-sub">1.5–3 hours a day. Buffer days on 7 &amp; 14. Everything live on Day 21. Sequence-dependent, not clock-dependent.</p>
+
+      <div class="week-tabs" role="tablist" aria-label="Build plan weeks">
+        <button class="week-tab active" data-week="1" role="tab" aria-selected="true">Week 1 — Ship Tier 1</button>
+        <button class="week-tab" data-week="2" role="tab" aria-selected="false">Week 2 — Finish Tier 2</button>
+        <button class="week-tab" data-week="3" role="tab" aria-selected="false">Week 3 — Launch Tier 3</button>
+      </div>
+
+      <div class="week-panels">
+        <ol class="day-list active" data-week-panel="1">
+          <li><span class="day-num">01</span><div><strong>Build Tier 1 core.</strong> Habit database + 7-day checklist.</div></li>
+          <li><span class="day-num">02</span><div><strong>Finish Tier 1 styling.</strong> Weekly summary view, then duplicate-test it.</div></li>
+          <li><span class="day-num">03</span><div><strong>List Tier 1.</strong> Write the listing, mock a thumbnail, publish to Etsy/Gumroad/Notion marketplace.</div></li>
+          <li><span class="day-num">04</span><div><strong>Start Tier 2.</strong> Daily Log tab + checkbox habit columns.</div></li>
+          <li><span class="day-num">05</span><div><strong>Build the Dashboard.</strong> Line chart + bar chart.</div></li>
+          <li><span class="day-num">06</span><div><strong>Correlation section.</strong> Mood/energy vs. completion, plus category tagging.</div></li>
+          <li class="buffer"><span class="day-num">07</span><div><strong>Buffer day.</strong> Catch up on overflow, answer early Tier 1 buyer questions.</div></li>
+        </ol>
+
+        <ol class="day-list" data-week-panel="2">
+          <li><span class="day-num">08</span><div><strong>Monthly Review tab.</strong> Auto-pull formulas for top/bottom habits.</div></li>
+          <li><span class="day-num">09</span><div><strong>Full styling pass.</strong> Colours, fonts, protect the formula cells.</div></li>
+          <li><span class="day-num">10</span><div><strong>QA + launch Tier 2.</strong> Fresh duplicate test, fix breakages, publish the listing.</div></li>
+          <li><span class="day-num">11</span><div><strong>Tier 3 foundations.</strong> Character Sheet + Daily Quests database.</div></li>
+          <li><span class="day-num">12</span><div><strong>XP system.</strong> XP rollup, Level formula, progress bar.</div></li>
+          <li><span class="day-num">13</span><div><strong>Goal Map.</strong> Relations/rollups linking quests → milestones → Boss Goals.</div></li>
+          <li class="buffer"><span class="day-num">14</span><div><strong>Buffer day.</strong></div></li>
+        </ol>
+
+        <ol class="day-list" data-week-panel="3">
+          <li><span class="day-num">15</span><div><strong>Time-Block Planner.</strong> Calendar/timeline view for habit time slots.</div></li>
+          <li><span class="day-num">16</span><div><strong>Icon pack.</strong> Source or design it, apply across the Tier 3 dashboard.</div></li>
+          <li><span class="day-num">17</span><div><strong>Badge gallery.</strong> XP-threshold reveal logic.</div></li>
+          <li><span class="day-num">18</span><div><strong>Write the guidebook / script the video.</strong></div></li>
+          <li><span class="day-num">19</span><div><strong>Finish the guide or video.</strong> Export as PDF or upload.</div></li>
+          <li><span class="day-num">20</span><div><strong>Full QA pass.</strong> Fresh duplicate test — click every link, relation, and rollup.</div></li>
+          <li><span class="day-num">21</span><div><strong>Launch.</strong> Write the Tier 3 listing, publish, cross-link all three tiers for upsells.</div></li>
+        </ol>
+      </div>
+
+      <div class="ongoing-card">
+        <h3>After launch — the daily 15–30 min routine</h3>
+        <ul>
+          <li><strong>Same-day support.</strong> Answer buyer questions the day they come in.</li>
+          <li><strong>Follow the sales.</strong> Whichever tier sells best, double down there next.</li>
+          <li><strong>Weekly review.</strong> Read reviews once a week, log feature requests for v2.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section id="philosophy" class="section section-alt">
+    <div class="wrap philosophy-grid">
+      <div>
+        <h2 class="section-title">What we don't over-invest in</h2>
+        <ul class="checklist no">
+          <li>No real animated app for Tier 3 — Notion + good formulas already reads as "gamified."</li>
+          <li>No hand-built Excel version of Tier 2 until Tier 1 proves people are buying.</li>
+          <li>No skipping the fresh-duplicate test — it's the #1 source of refund requests.</li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="section-title">What every tier gets, no exceptions</h2>
+        <ul class="checklist yes">
+          <li>Duplicated into a blank workspace and clicked through, end to end.</li>
+          <li>One consistent visual identity, not a grab-bag of colours.</li>
+          <li>A delivery mechanism that works the moment a buyer clicks it.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <span class="brand-mark">🧪</span>
+      <span class="brand-text">THE HABITS LAB</span>
+    </div>
+    <p>Three tiers. One system. Built in Notion &amp; Google Sheets.</p>
+  </div>
+</footer>
+
+<script src="assets/script.js"></script>
+</body>
+</html>
