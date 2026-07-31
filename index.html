@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Habits Lab — Field Catalog of Habit-Tracking Instruments</title>
-<meta name="description" content="Three habit-tracking instruments from The Habits Lab: a Notion field notebook, a Sheets instrument panel, and a gamified Notion engine. Specs, pricing, and the 21-day build log.">
+<title>The Habits Lab — Habit Tracker: Basic, Premium &amp; Deluxe</title>
+<meta name="description" content="The Habits Lab habit tracker, in three tiers: a $5 Notion checklist, a $19–29 Google Sheets analytics dashboard, and a $47–67 gamified Deluxe system. Specs, pricing, and the 21-day build log.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
 <style>
 
@@ -158,6 +158,8 @@
 
   /* ---------- Hero ---------- */
   .hero { padding: 76px 0 56px; border-bottom: 1px dashed var(--line); }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: center; margin-bottom: 48px; }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
   .hero-tag {
     display: inline-block;
     font-family: var(--mono);
@@ -238,6 +240,64 @@
   }
   @media (max-width: 640px) { .spec-sheet { grid-template-columns: repeat(2, 1fr); } }
 
+  /* ---------- Hero habit-tracker mockup ---------- */
+  .tracker-preview {
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    box-shadow: var(--shadow);
+  }
+  .preview-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-alt);
+  }
+  .preview-bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); display: inline-block; }
+  .preview-bar-title {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
+  }
+  .preview-body { padding: 8px 16px 16px; }
+  .preview-row {
+    display: grid;
+    grid-template-columns: 1.3fr repeat(7, 20px) 46px;
+    align-items: center;
+    gap: 5px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .preview-row:last-child { border-bottom: none; }
+  .preview-head {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+  .preview-head span { text-align: center; }
+  .preview-head span:first-child, .preview-head span:last-child { text-align: left; }
+  .preview-habit { font-size: 0.85rem; }
+  .chk {
+    width: 15px;
+    height: 15px;
+    border: 1px solid var(--line);
+    justify-self: center;
+    display: inline-block;
+  }
+  .chk.on { background: var(--accent); border-color: var(--accent-strong); }
+  .preview-streak {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--accent-strong);
+  }
+
   /* ---------- Sections ---------- */
   .section { padding: 72px 0; border-bottom: 1px dashed var(--line); }
   .section-alt { background: var(--paper-alt); }
@@ -286,16 +346,27 @@
 
   .tier-tag {
     font-family: var(--mono);
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--paper-raised);
     background: var(--ink);
-    padding: 7px 16px;
+    padding: 9px 16px;
     align-self: flex-start;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 10px 100%, 0 70%);
   }
   .tier-card.tier-featured .tier-tag { background: var(--accent-strong); }
+  .featured-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-strong);
+    background: var(--accent-tint);
+    padding: 3px 10px;
+    margin-left: 10px;
+  }
 
   .tier-body { padding: 26px 26px 24px; display: flex; flex-direction: column; flex-grow: 1; }
 
@@ -473,7 +544,7 @@
       <a href="#log">Build Log</a>
       <a href="#protocol">Protocol</a>
     </nav>
-    <a class="nav-cta" href="#tiers">Open Catalog</a>
+    <a class="nav-cta" href="#tiers">See Pricing</a>
   </div>
 </header>
 
@@ -481,15 +552,45 @@
 
   <section class="hero">
     <div class="wrap">
-      <span class="hero-tag">Catalog No. 003 — Habit Instrumentation</span>
-      <h1>Three instruments.<br>One <em>habit</em>, tracked three ways.</h1>
-      <p class="hero-sub">
-        A five-dollar page in a notebook. A twenty-dollar panel of gauges. A fifty-dollar
-        engine with levels and loot. Same underlying method — increasing amounts of ceremony.
-      </p>
-      <div class="hero-actions">
-        <a href="#tiers" class="btn btn-primary">Browse the three tiers</a>
-        <a href="#log" class="btn btn-ghost">Read the build log</a>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="hero-tag">Habit Tracker Product Suite</span>
+          <h1>One habit tracker.<br>Basic, Premium, <em>or Deluxe.</em></h1>
+          <p class="hero-sub">
+            Check a box, keep a streak — that's the whole job. We sell that job three ways:
+            a $5 Notion tracker, a $19–29 analytics dashboard, and a $47–67 gamified system
+            with XP and levels.
+          </p>
+          <div class="hero-actions">
+            <a href="#tiers" class="btn btn-primary">Compare the 3 tiers</a>
+            <a href="#log" class="btn btn-ghost">See the build log</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="tracker-preview" aria-hidden="true">
+            <div class="preview-bar"><i></i><i></i><i></i><span class="preview-bar-title">HABIT TRACKER · WEEK 14</span></div>
+            <div class="preview-body">
+              <div class="preview-row preview-head">
+                <span>Habit</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span><span>Streak</span>
+              </div>
+              <div class="preview-row">
+                <span class="preview-habit">Morning run</span>
+                <i class="chk on"></i><i class="chk on"></i><i class="chk on"></i><i class="chk"></i><i class="chk on"></i><i class="chk on"></i><i class="chk"></i>
+                <span class="preview-streak">12</span>
+              </div>
+              <div class="preview-row">
+                <span class="preview-habit">Read 20 pages</span>
+                <i class="chk on"></i><i class="chk on"></i><i class="chk on"></i><i class="chk on"></i><i class="chk on"></i><i class="chk"></i><i class="chk"></i>
+                <span class="preview-streak">8</span>
+              </div>
+              <div class="preview-row">
+                <span class="preview-habit">Meditate</span>
+                <i class="chk on"></i><i class="chk on"></i><i class="chk on"></i><i class="chk on"></i><i class="chk on"></i><i class="chk on"></i><i class="chk on"></i>
+                <span class="preview-streak">21</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="spec-sheet">
         <div class="spec-cell"><span class="spec-k">Tiers</span><span class="spec-v">03</span></div>
@@ -503,20 +604,20 @@
   <section id="tiers" class="section">
     <div class="wrap">
       <div class="section-head">
-        <span class="section-kicker">Specimen catalog</span>
-        <h2 class="section-title">Pick your level of instrumentation</h2>
-        <p class="section-sub">Same core mechanic — mark a habit, watch a streak — three very different amounts of surface area.</p>
+        <span class="section-kicker">Habit tracker lineup</span>
+        <h2 class="section-title">Basic, Premium, or Deluxe</h2>
+        <p class="section-sub">Same habit tracker at heart — mark a habit, keep a streak — three tiers of depth and price.</p>
       </div>
 
       <div class="tier-grid">
 
         <article class="tier-card">
-          <span class="tier-tag mono">Specimen A · Basic</span>
+          <span class="tier-tag mono">Tier 1 — Basic</span>
           <div class="tier-body">
             <h3 class="tier-name">Minimal Notion Tracker</h3>
             <div class="tier-tool">Built in Notion</div>
             <div class="tier-price">$5<span>–</span>$10</div>
-            <p class="tier-desc">A clean, duplicable page. The fastest build, the cheapest buy, and the trust-builder that funnels people toward B and C.</p>
+            <p class="tier-desc">A clean, duplicable page. The fastest build, the cheapest buy, and the trust-builder that funnels people toward Premium and Deluxe.</p>
             <ul class="tier-features">
               <li>7-day checkbox grid (Mon–Sun) per habit</li>
               <li>Optional Category select field</li>
@@ -530,12 +631,12 @@
         </article>
 
         <article class="tier-card tier-featured">
-          <span class="tier-tag mono">Specimen B · Premium — most photographed</span>
+          <span class="tier-tag mono">Tier 2 — Premium<span class="featured-badge">Most photographed</span></span>
           <div class="tier-body">
             <h3 class="tier-name">Aesthetic Analytics Suite</h3>
             <div class="tier-tool">Built in Google Sheets</div>
             <div class="tier-price">$19<span>–</span>$29</div>
-            <p class="tier-desc">A real instrument panel, not just a grid. Buyers screenshot the dashboard and post it — that's the whole marketing engine.</p>
+            <p class="tier-desc">A real analytics dashboard, not just a grid. Buyers screenshot it and post it — that's the whole marketing engine.</p>
             <ul class="tier-features">
               <li>Dashboard, Daily Log, Monthly Review, Settings tabs</li>
               <li>Line chart of monthly consistency trend</li>
@@ -550,7 +651,7 @@
         </article>
 
         <article class="tier-card">
-          <span class="tier-tag mono">Specimen C · Deluxe</span>
+          <span class="tier-tag mono">Tier 3 — Deluxe</span>
           <div class="tier-body">
             <h3 class="tier-name">Gamified RPG Ecosystem</h3>
             <div class="tier-tool">Notion + PDF/Video</div>
@@ -583,7 +684,7 @@
       <div class="table-scroll">
         <table class="compare-table">
           <thead>
-            <tr><th>&nbsp;</th><th>A · Basic</th><th>B · Premium</th><th>C · Deluxe</th></tr>
+            <tr><th>&nbsp;</th><th>Basic</th><th>Premium</th><th>Deluxe</th></tr>
           </thead>
           <tbody>
             <tr><td>Price</td><td class="num">$5–$10</td><td class="num">$19–$29</td><td class="num">$47–$67</td></tr>
@@ -610,27 +711,27 @@
       </div>
 
       <div class="week-tabs" role="tablist" aria-label="Build plan weeks">
-        <button class="week-tab active" data-week="1" role="tab" aria-selected="true">Week 1 — Ship Tier A</button>
-        <button class="week-tab" data-week="2" role="tab" aria-selected="false">Week 2 — Finish Tier B</button>
-        <button class="week-tab" data-week="3" role="tab" aria-selected="false">Week 3 — Launch Tier C</button>
+        <button class="week-tab active" data-week="1" role="tab" aria-selected="true">Week 1 — Ship Basic</button>
+        <button class="week-tab" data-week="2" role="tab" aria-selected="false">Week 2 — Finish Premium</button>
+        <button class="week-tab" data-week="3" role="tab" aria-selected="false">Week 3 — Launch Deluxe</button>
       </div>
 
       <div class="week-panels">
         <ol class="day-list active" data-week-panel="1">
-          <li><span class="day-num">D1</span><div><strong>Build Tier A core.</strong> Habit database and the 7-day checklist.</div></li>
-          <li><span class="day-num">D2</span><div><strong>Finish Tier A styling.</strong> Weekly summary view, then duplicate-test it.</div></li>
-          <li><span class="day-num">D3</span><div><strong>List Tier A.</strong> Write the listing, mock a thumbnail, publish to Etsy/Gumroad/Notion marketplace.</div></li>
-          <li><span class="day-num">D4</span><div><strong>Start Tier B.</strong> Daily Log tab and checkbox habit columns.</div></li>
+          <li><span class="day-num">D1</span><div><strong>Build the Basic core.</strong> Habit database and the 7-day checklist.</div></li>
+          <li><span class="day-num">D2</span><div><strong>Finish Basic styling.</strong> Weekly summary view, then duplicate-test it.</div></li>
+          <li><span class="day-num">D3</span><div><strong>List Basic.</strong> Write the listing, mock a thumbnail, publish to Etsy/Gumroad/Notion marketplace.</div></li>
+          <li><span class="day-num">D4</span><div><strong>Start Premium.</strong> Daily Log tab and checkbox habit columns.</div></li>
           <li><span class="day-num">D5</span><div><strong>Build the Dashboard.</strong> Line chart plus bar chart.</div></li>
           <li><span class="day-num">D6</span><div><strong>Correlation section.</strong> Mood/energy vs. completion, plus category tagging.</div></li>
-          <li class="buffer"><span class="day-num">D7</span><div><strong>Buffer day.</strong> Catch up on overflow, answer early Tier A buyer questions.</div></li>
+          <li class="buffer"><span class="day-num">D7</span><div><strong>Buffer day.</strong> Catch up on overflow, answer early Basic buyer questions.</div></li>
         </ol>
 
         <ol class="day-list" data-week-panel="2">
           <li><span class="day-num">D8</span><div><strong>Monthly Review tab.</strong> Auto-pull formulas for top/bottom habits.</div></li>
           <li><span class="day-num">D9</span><div><strong>Full styling pass.</strong> Colours, fonts, protect the formula cells.</div></li>
-          <li><span class="day-num">D10</span><div><strong>QA and launch Tier B.</strong> Fresh duplicate test, fix breakages, publish the listing.</div></li>
-          <li><span class="day-num">D11</span><div><strong>Tier C foundations.</strong> Character Sheet and Daily Quests database.</div></li>
+          <li><span class="day-num">D10</span><div><strong>QA and launch Premium.</strong> Fresh duplicate test, fix breakages, publish the listing.</div></li>
+          <li><span class="day-num">D11</span><div><strong>Deluxe foundations.</strong> Character Sheet and Daily Quests database.</div></li>
           <li><span class="day-num">D12</span><div><strong>XP system.</strong> XP rollup, Level formula, progress bar.</div></li>
           <li><span class="day-num">D13</span><div><strong>Goal Map.</strong> Relations and rollups linking quests → milestones → Boss Goals.</div></li>
           <li class="buffer"><span class="day-num">D14</span><div><strong>Buffer day.</strong></div></li>
@@ -638,12 +739,12 @@
 
         <ol class="day-list" data-week-panel="3">
           <li><span class="day-num">D15</span><div><strong>Time-Block Planner.</strong> Calendar/timeline view for habit time slots.</div></li>
-          <li><span class="day-num">D16</span><div><strong>Icon pack.</strong> Source or design it, apply across the Tier C dashboard.</div></li>
+          <li><span class="day-num">D16</span><div><strong>Icon pack.</strong> Source or design it, apply across the Deluxe dashboard.</div></li>
           <li><span class="day-num">D17</span><div><strong>Badge gallery.</strong> XP-threshold reveal logic.</div></li>
           <li><span class="day-num">D18</span><div><strong>Write the guidebook.</strong> Or script the walkthrough video.</div></li>
           <li><span class="day-num">D19</span><div><strong>Finish the guide or video.</strong> Export as PDF or upload.</div></li>
           <li><span class="day-num">D20</span><div><strong>Full QA pass.</strong> Fresh duplicate test — click every link, relation, and rollup.</div></li>
-          <li><span class="day-num">D21</span><div><strong>Launch.</strong> Write the Tier C listing, publish, cross-link all three tiers for upsells.</div></li>
+          <li><span class="day-num">D21</span><div><strong>Launch.</strong> Write the Deluxe listing, publish, cross-link all three tiers for upsells.</div></li>
         </ol>
       </div>
 
@@ -668,8 +769,8 @@
         <div class="protocol-card no">
           <h3><span class="stamp">✕</span> Do not over-invest</h3>
           <ul>
-            <li>No real animated app for Tier C — Notion and good formulas already reads as "gamified."</li>
-            <li>No hand-built Excel version of Tier B until Tier A proves people are buying.</li>
+            <li>No real animated app for Deluxe — Notion and good formulas already reads as "gamified."</li>
+            <li>No hand-built Excel version of Premium until Basic proves people are buying.</li>
             <li>No skipping the fresh-duplicate test — it's the number one source of refund requests.</li>
           </ul>
         </div>
