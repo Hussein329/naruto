@@ -21,8 +21,12 @@
     --accent-strong: #8f2c12;
     --accent-ink: #fdf4e8;
     --accent-tint: #ecd2ba;
+    --gold: #93650f;
+    --gold-strong: #7a5209;
+    --gold-tint: #e7d09c;
     --verify: #4d6440;
     --shadow: 0 18px 40px -24px rgba(36, 31, 22, 0.45);
+    --shadow-hover: 0 26px 48px -20px rgba(36, 31, 22, 0.55);
     --grid-line: rgba(178, 58, 26, 0.08);
     --maxw: 1080px;
     --mono: ui-monospace, "SF Mono", "IBM Plex Mono", "Cascadia Mono", Menlo, Consolas, monospace;
@@ -43,8 +47,12 @@
       --accent-strong: #f08553;
       --accent-ink: #1c1006;
       --accent-tint: #3c2313;
+      --gold: #d9a53f;
+      --gold-strong: #f0bc57;
+      --gold-tint: #3a2d10;
       --verify: #8fae74;
       --shadow: 0 18px 44px -20px rgba(0, 0, 0, 0.7);
+      --shadow-hover: 0 28px 52px -18px rgba(0, 0, 0, 0.8);
       --grid-line: rgba(226, 112, 63, 0.07);
     }
   }
@@ -53,14 +61,16 @@
     --ink: #ece2cc; --ink-soft: #b6a986; --ink-faint: #7c7154;
     --line: #3c3320; --line-soft: #2b2517;
     --accent: #e2703f; --accent-strong: #f08553; --accent-ink: #1c1006; --accent-tint: #3c2313;
-    --verify: #8fae74; --shadow: 0 18px 44px -20px rgba(0,0,0,0.7); --grid-line: rgba(226,112,63,0.07);
+    --gold: #d9a53f; --gold-strong: #f0bc57; --gold-tint: #3a2d10;
+    --verify: #8fae74; --shadow: 0 18px 44px -20px rgba(0,0,0,0.7); --shadow-hover: 0 28px 52px -18px rgba(0,0,0,0.8); --grid-line: rgba(226,112,63,0.07);
   }
   :root[data-theme="light"] {
     --paper: #f4eee0; --paper-raised: #fbf7ec; --paper-alt: #ece2cb;
     --ink: #241f16; --ink-soft: #59503c; --ink-faint: #8d8368;
     --line: #cabf9d; --line-soft: #ddd3b6;
     --accent: #b23a1a; --accent-strong: #8f2c12; --accent-ink: #fdf4e8; --accent-tint: #ecd2ba;
-    --verify: #4d6440; --shadow: 0 18px 40px -24px rgba(36,31,22,0.45); --grid-line: rgba(178,58,26,0.08);
+    --gold: #93650f; --gold-strong: #7a5209; --gold-tint: #e7d09c;
+    --verify: #4d6440; --shadow: 0 18px 40px -24px rgba(36,31,22,0.45); --shadow-hover: 0 26px 48px -20px rgba(36,31,22,0.55); --grid-line: rgba(178,58,26,0.08);
   }
 
   * { box-sizing: border-box; }
@@ -283,12 +293,22 @@
   .preview-head span:first-child, .preview-head span:last-child { text-align: left; }
   .preview-habit { font-size: 0.85rem; }
   .chk {
-    width: 15px;
-    height: 15px;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
     border: 1px solid var(--line);
+    border-radius: 0;
     justify-self: center;
     display: inline-block;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.12s ease, border-color 0.12s ease, transform 0.08s ease;
   }
+  .chk:hover { border-color: var(--accent); transform: scale(1.15); }
+  .chk:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .chk.on { background: var(--accent); border-color: var(--accent-strong); }
   .preview-streak {
     font-family: var(--mono);
@@ -296,6 +316,15 @@
     font-weight: 700;
     font-size: 0.82rem;
     color: var(--accent-strong);
+    transition: color 0.15s ease;
+  }
+  .preview-streak.bump { color: var(--verify); }
+  .preview-hint {
+    text-align: center;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    padding: 10px 0 14px;
   }
 
   /* ---------- Sections ---------- */
@@ -331,11 +360,16 @@
   .tier-card {
     background: var(--paper-raised);
     border: 1px solid var(--line);
+    border-top: 4px solid var(--ink-faint);
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
     animation: card-in 0.5s ease both;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
   }
+  .tier-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+  .tier-card.tier-premium { border-top-color: var(--accent); }
+  .tier-card.tier-deluxe { border-top-color: var(--gold); }
   .tier-card:nth-child(1) { animation-delay: 0s; }
   .tier-card:nth-child(2) { animation-delay: 0.08s; }
   .tier-card:nth-child(3) { animation-delay: 0.16s; }
@@ -355,7 +389,8 @@
     align-self: flex-start;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 10px 100%, 0 70%);
   }
-  .tier-card.tier-featured .tier-tag { background: var(--accent-strong); }
+  .tier-card.tier-premium .tier-tag { background: var(--accent-strong); }
+  .tier-card.tier-deluxe .tier-tag { background: var(--gold-strong); color: var(--accent-ink); }
   .featured-badge {
     display: inline-block;
     font-family: var(--mono);
@@ -370,6 +405,22 @@
 
   .tier-body { padding: 26px 26px 24px; display: flex; flex-direction: column; flex-grow: 1; }
 
+  .tier-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line);
+    background: var(--paper-alt);
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .tier-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .tier-card.tier-premium .tier-icon { color: var(--accent-strong); border-color: var(--accent); }
+  .tier-card.tier-deluxe .tier-icon { color: var(--gold-strong); border-color: var(--gold); }
+  .tier-card.tier-deluxe .tier-icon svg { fill: currentColor; stroke: none; }
+
   .tier-name { font-size: 1.3rem; font-weight: 700; margin: 4px 0 6px; }
   .tier-tool { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--ink-faint); text-transform: uppercase; margin-bottom: 18px; }
 
@@ -381,6 +432,8 @@
     color: var(--accent-strong);
     margin-bottom: 16px;
   }
+  .tier-card.tier-basic .tier-price { color: var(--ink); }
+  .tier-card.tier-deluxe .tier-price { color: var(--gold-strong); }
   .tier-price span { color: var(--ink-faint); font-weight: 400; font-size: 1.1rem; margin: 0 3px; }
 
   .tier-desc { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 20px; }
@@ -399,6 +452,8 @@
     color: var(--accent);
     font-family: var(--mono);
   }
+  .tier-card.tier-basic .tier-features li::before { color: var(--ink-faint); }
+  .tier-card.tier-deluxe .tier-features li::before { color: var(--gold-strong); }
 
   .tier-meta {
     display: flex;
@@ -410,7 +465,27 @@
     border-top: 1px solid var(--line-soft);
     padding-top: 14px;
     text-transform: uppercase;
+    margin-bottom: 14px;
   }
+
+  .tier-compare-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  .tier-compare-link:hover { color: var(--accent-strong); }
+  .tier-compare-link svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; transition: transform 0.15s ease; }
+  .tier-compare-link:hover svg { transform: translateX(3px); }
 
   /* ---------- Compare table ---------- */
   .table-scroll { overflow-x: auto; border: 1px solid var(--line); background: var(--paper-raised); }
@@ -420,7 +495,9 @@
     padding: 13px 18px;
     border-bottom: 1px solid var(--line-soft);
     font-size: 0.9rem;
+    transition: background-color 0.2s ease;
   }
+  .compare-table td.col-hover, .compare-table th.col-hover { background: var(--accent-tint); }
   .compare-table thead th {
     font-family: var(--mono);
     font-size: 0.72rem;
@@ -567,7 +644,7 @@
           </div>
         </div>
         <div class="hero-visual">
-          <div class="tracker-preview" aria-hidden="true">
+          <div class="tracker-preview">
             <div class="preview-bar"><i></i><i></i><i></i><span class="preview-bar-title">HABIT TRACKER · WEEK 14</span></div>
             <div class="preview-body">
               <div class="preview-row preview-head">
@@ -575,26 +652,45 @@
               </div>
               <div class="preview-row">
                 <span class="preview-habit">Morning run</span>
-                <i class="chk on"></i><i class="chk on"></i><i class="chk on"></i><i class="chk"></i><i class="chk on"></i><i class="chk on"></i><i class="chk"></i>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Monday, Morning run"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Tuesday, Morning run"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Wednesday, Morning run"></button>
+                <button type="button" class="chk" aria-pressed="false" aria-label="Thursday, Morning run"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Friday, Morning run"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Saturday, Morning run"></button>
+                <button type="button" class="chk" aria-pressed="false" aria-label="Sunday, Morning run"></button>
                 <span class="preview-streak">12</span>
               </div>
               <div class="preview-row">
                 <span class="preview-habit">Read 20 pages</span>
-                <i class="chk on"></i><i class="chk on"></i><i class="chk on"></i><i class="chk on"></i><i class="chk on"></i><i class="chk"></i><i class="chk"></i>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Monday, Read 20 pages"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Tuesday, Read 20 pages"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Wednesday, Read 20 pages"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Thursday, Read 20 pages"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Friday, Read 20 pages"></button>
+                <button type="button" class="chk" aria-pressed="false" aria-label="Saturday, Read 20 pages"></button>
+                <button type="button" class="chk" aria-pressed="false" aria-label="Sunday, Read 20 pages"></button>
                 <span class="preview-streak">8</span>
               </div>
               <div class="preview-row">
                 <span class="preview-habit">Meditate</span>
-                <i class="chk on"></i><i class="chk on"></i><i class="chk on"></i><i class="chk on"></i><i class="chk on"></i><i class="chk on"></i><i class="chk on"></i>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Monday, Meditate"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Tuesday, Meditate"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Wednesday, Meditate"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Thursday, Meditate"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Friday, Meditate"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Saturday, Meditate"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Sunday, Meditate"></button>
                 <span class="preview-streak">21</span>
               </div>
             </div>
+            <div class="preview-hint mono">Try it — click a box</div>
           </div>
         </div>
       </div>
       <div class="spec-sheet">
         <div class="spec-cell"><span class="spec-k">Tiers</span><span class="spec-v">03</span></div>
-        <div class="spec-cell"><span class="spec-k">Build window</span><span class="spec-v">21 days</span></div>
+        <div class="spec-cell"><span class="spec-k">Build window</span><span class="spec-v" data-count-to="21" data-suffix=" days">21 days</span></div>
         <div class="spec-cell"><span class="spec-k">Price range</span><span class="spec-v">$5–$67</span></div>
         <div class="spec-cell"><span class="spec-k">Tooling</span><span class="spec-v">Notion + Sheets</span></div>
       </div>
@@ -611,9 +707,12 @@
 
       <div class="tier-grid">
 
-        <article class="tier-card">
+        <article class="tier-card tier-basic">
           <span class="tier-tag mono">Tier 1 — Basic</span>
           <div class="tier-body">
+            <div class="tier-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><polyline points="7 12 10 15 17 8"></polyline></svg>
+            </div>
             <h3 class="tier-name">Minimal Notion Tracker</h3>
             <div class="tier-tool">Built in Notion</div>
             <div class="tier-price">$5<span>–</span>$10</div>
@@ -627,12 +726,16 @@
               <li>One-click "duplicate as template" delivery</li>
             </ul>
             <div class="tier-meta"><span>Build 3–5h</span><span>Ships D+3</span></div>
+            <button type="button" class="tier-compare-link" data-jump-col="1">See it in the comparison <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
           </div>
         </article>
 
-        <article class="tier-card tier-featured">
+        <article class="tier-card tier-premium tier-featured">
           <span class="tier-tag mono">Tier 2 — Premium<span class="featured-badge">Most photographed</span></span>
           <div class="tier-body">
+            <div class="tier-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><line x1="4" y1="20" x2="4" y2="12"></line><line x1="12" y1="20" x2="12" y2="5"></line><line x1="20" y1="20" x2="20" y2="9"></line></svg>
+            </div>
             <h3 class="tier-name">Aesthetic Analytics Suite</h3>
             <div class="tier-tool">Built in Google Sheets</div>
             <div class="tier-price">$19<span>–</span>$29</div>
@@ -647,12 +750,16 @@
               <li>Protected formula ranges — buyers can't break it</li>
             </ul>
             <div class="tier-meta"><span>Build 8–14h</span><span>Ships D+10</span></div>
+            <button type="button" class="tier-compare-link" data-jump-col="2">See it in the comparison <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
           </div>
         </article>
 
-        <article class="tier-card">
+        <article class="tier-card tier-deluxe">
           <span class="tier-tag mono">Tier 3 — Deluxe</span>
           <div class="tier-body">
+            <div class="tier-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9"></polygon></svg>
+            </div>
             <h3 class="tier-name">Gamified RPG Ecosystem</h3>
             <div class="tier-tool">Notion + PDF/Video</div>
             <div class="tier-price">$47<span>–</span>$67</div>
@@ -668,6 +775,7 @@
               <li>15–25 pg guidebook or 15–20 min walkthrough video</li>
             </ul>
             <div class="tier-meta"><span>Build 20–35h</span><span>Ships D+21</span></div>
+            <button type="button" class="tier-compare-link" data-jump-col="3">See it in the comparison <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
           </div>
         </article>
 
@@ -681,21 +789,22 @@
         <span class="section-kicker">Spec sheet</span>
         <h2 class="section-title">Side by side</h2>
       </div>
+      <p class="section-sub" style="margin-bottom:24px;">Hover a column, or click "see it in the comparison" on any tier card above, to line it up against the other two.</p>
       <div class="table-scroll">
-        <table class="compare-table">
+        <table class="compare-table" id="compare-table">
           <thead>
-            <tr><th>&nbsp;</th><th>Basic</th><th>Premium</th><th>Deluxe</th></tr>
+            <tr><th>&nbsp;</th><th data-col="1">Basic</th><th data-col="2">Premium</th><th data-col="3">Deluxe</th></tr>
           </thead>
           <tbody>
-            <tr><td>Price</td><td class="num">$5–$10</td><td class="num">$19–$29</td><td class="num">$47–$67</td></tr>
-            <tr><td>Tool</td><td>Notion</td><td>Google Sheets</td><td>Notion + PDF/Video</td></tr>
-            <tr><td>Build time</td><td class="num">3–5 hrs</td><td class="num">8–14 hrs</td><td class="num">20–35 hrs</td></tr>
-            <tr><td>Ships</td><td>Day 3</td><td>Day 10</td><td>Day 21</td></tr>
-            <tr><td>Streak tracking</td><td>Manual counter</td><td>Chart-driven trend</td><td>XP + level system</td></tr>
-            <tr><td>Analytics</td><td>Basic % complete</td><td>Correlation, sparklines, category breakdown</td><td>XP rollups, quest progress</td></tr>
-            <tr><td>Visual identity</td><td>One accent colour</td><td>Full palette + typography pass</td><td>Custom licensed icon pack</td></tr>
-            <tr><td>Extras</td><td>—</td><td>Protected formula cells</td><td>Badges, guidebook/video, Boss Goals</td></tr>
-            <tr><td>Best for</td><td>Trying the system out</td><td>People who like data</td><td>People who need a game to stay consistent</td></tr>
+            <tr><td>Price</td><td class="num" data-col="1">$5–$10</td><td class="num" data-col="2">$19–$29</td><td class="num" data-col="3">$47–$67</td></tr>
+            <tr><td>Tool</td><td data-col="1">Notion</td><td data-col="2">Google Sheets</td><td data-col="3">Notion + PDF/Video</td></tr>
+            <tr><td>Build time</td><td class="num" data-col="1">3–5 hrs</td><td class="num" data-col="2">8–14 hrs</td><td class="num" data-col="3">20–35 hrs</td></tr>
+            <tr><td>Ships</td><td data-col="1">Day 3</td><td data-col="2">Day 10</td><td data-col="3">Day 21</td></tr>
+            <tr><td>Streak tracking</td><td data-col="1">Manual counter</td><td data-col="2">Chart-driven trend</td><td data-col="3">XP + level system</td></tr>
+            <tr><td>Analytics</td><td data-col="1">Basic % complete</td><td data-col="2">Correlation, sparklines, category breakdown</td><td data-col="3">XP rollups, quest progress</td></tr>
+            <tr><td>Visual identity</td><td data-col="1">One accent colour</td><td data-col="2">Full palette + typography pass</td><td data-col="3">Custom licensed icon pack</td></tr>
+            <tr><td>Extras</td><td data-col="1">—</td><td data-col="2">Protected formula cells</td><td data-col="3">Badges, guidebook/video, Boss Goals</td></tr>
+            <tr><td>Best for</td><td data-col="1">Trying the system out</td><td data-col="2">People who like data</td><td data-col="3">People who need a game to stay consistent</td></tr>
           </tbody>
         </table>
       </div>
@@ -810,6 +919,59 @@
       });
     });
 
+    // Interactive habit-tracker preview: click a box, watch the streak move.
+    document.querySelectorAll(".preview-row:not(.preview-head)").forEach((row) => {
+      const streakEl = row.querySelector(".preview-streak");
+      row.querySelectorAll(".chk").forEach((box) => {
+        box.addEventListener("click", () => {
+          const turningOn = !box.classList.contains("on");
+          box.classList.toggle("on", turningOn);
+          box.setAttribute("aria-pressed", String(turningOn));
+          const current = parseInt(streakEl.textContent, 10) || 0;
+          streakEl.textContent = Math.max(0, current + (turningOn ? 1 : -1));
+          streakEl.classList.remove("bump");
+          void streakEl.offsetWidth;
+          streakEl.classList.add("bump");
+        });
+      });
+    });
+
+    // Compare table: hovering a column header highlights that tier's column.
+    const compareTable = document.getElementById("compare-table");
+    if (compareTable) {
+      const setCol = (col, on) => {
+        compareTable.querySelectorAll('[data-col="' + col + '"]').forEach((cell) => {
+          cell.classList.toggle("col-hover", on);
+        });
+      };
+      compareTable.querySelectorAll("thead [data-col]").forEach((th) => {
+        th.addEventListener("mouseenter", () => setCol(th.dataset.col, true));
+        th.addEventListener("mouseleave", () => setCol(th.dataset.col, false));
+      });
+
+      document.querySelectorAll(".tier-compare-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          const col = link.dataset.jumpCol;
+          document.getElementById("compare").scrollIntoView({ behavior: "smooth", block: "start" });
+          setCol(col, true);
+          setTimeout(() => setCol(col, false), 1600);
+        });
+      });
+    }
+
+    // Spec-sheet: count up the numeric stats on load.
+    document.querySelectorAll(".spec-v[data-count-to]").forEach((el) => {
+      const target = parseInt(el.dataset.countTo, 10);
+      const suffix = el.dataset.suffix || "";
+      const duration = 700;
+      const start = performance.now();
+      const step = (now) => {
+        const progress = Math.min(1, (now - start) / duration);
+        el.textContent = Math.round(target * progress) + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
   });
 </script>
 </body>
