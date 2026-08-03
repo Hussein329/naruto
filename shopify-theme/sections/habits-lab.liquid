@@ -1,0 +1,1005 @@
+<style>
+
+  #habits-lab-embed {
+    --paper: #070707;
+    --paper-raised: #121213;
+    --paper-alt: #0c0c0d;
+    --ink: #f4f1ee;
+    --ink-soft: #b0aca7;
+    --ink-faint: #6f6b67;
+    --line: #2a2a2b;
+    --line-soft: #1c1c1d;
+    --accent: #ff2e42;
+    --accent-strong: #ff5164;
+    --accent-ink: #0a0a0a;
+    --accent-tint: #3c0d13;
+    --gold: #ff0037;
+    --gold-strong: #ff3d5c;
+    --gold-tint: #40040f;
+    --verify: #f4f1ee;
+    --glow: 0 0 1px rgba(255, 46, 66, 0.4), 0 0 32px rgba(255, 46, 66, 0.35);
+    --glow-strong: 0 0 1px rgba(255, 61, 92, 0.6), 0 0 46px rgba(255, 20, 50, 0.55);
+    --shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.8);
+    --shadow-hover: 0 26px 50px -18px rgba(0, 0, 0, 0.85);
+    --grid-line: rgba(255, 46, 66, 0.075);
+    --maxw: 1080px;
+    --mono: ui-monospace, "SF Mono", "IBM Plex Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "PT Serif", serif;
+  }
+
+  
+  @media (prefers-color-scheme: light) { #habits-lab-embed { color-scheme: dark; } }
+  #habits-lab-embed[data-theme="light"], #habits-lab-embed[data-theme="dark"] { color-scheme: dark; }
+
+  #habits-lab-embed, #habits-lab-embed * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    #habits-lab-embed, #habits-lab-embed * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  #habits-lab-embed {
+    margin: 0;
+    background:
+      repeating-linear-gradient(0deg, var(--grid-line) 0 1px, transparent 1px 32px),
+      repeating-linear-gradient(90deg, var(--grid-line) 0 1px, transparent 1px 32px),
+      var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    line-height: 1.55;
+    font-size: 17px;
+  }
+
+  #habits-lab-embed .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+  #habits-lab-embed a { color: inherit; }
+
+  #habits-lab-embed .mono {
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  #habits-lab-embed code {
+    font-family: var(--mono);
+    background: var(--paper-alt);
+    border: 1px solid var(--line);
+    padding: 1px 6px;
+    font-size: 0.82em;
+    color: var(--accent-strong);
+  }
+
+  #habits-lab-embed ::selection { background: var(--accent-tint); color: var(--ink); }
+
+  
+  #habits-lab-embed .site-header {
+    position: relative;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  #habits-lab-embed .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 66px;
+    gap: 20px;
+  }
+  #habits-lab-embed .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    text-decoration: none;
+    font-weight: 700;
+  }
+  #habits-lab-embed .brand-mark { display: inline-flex; color: var(--accent-strong); }
+  #habits-lab-embed .brand-mark svg { width: 19px; height: 19px; }
+  #habits-lab-embed .brand-text { font-family: var(--mono); font-size: 0.86rem; letter-spacing: 0.14em; }
+
+  #habits-lab-embed .main-nav { display: flex; gap: 26px; }
+  #habits-lab-embed .main-nav a {
+    font-family: var(--mono);
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 0.76rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.15s ease;
+  }
+  #habits-lab-embed .main-nav a:hover { color: var(--accent-strong); }
+
+  #habits-lab-embed .nav-cta {
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: var(--accent-ink);
+    padding: 9px 16px;
+    white-space: nowrap;
+    border: 1px solid var(--accent-strong);
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  #habits-lab-embed .nav-cta:hover { background: var(--accent-strong); box-shadow: var(--glow); }
+
+  @media (max-width: 760px) { #habits-lab-embed .main-nav { display: none; } }
+
+  
+  #habits-lab-embed .hero { position: relative; padding: 76px 0 56px; border-bottom: 1px solid var(--line); overflow: hidden; }
+  #habits-lab-embed .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(420px circle at var(--mx, 30%) var(--my, 10%), rgba(255, 46, 66, 0.16), transparent 70%);
+  }
+  #habits-lab-embed .hero > .wrap { position: relative; z-index: 1; }
+  #habits-lab-embed .hero-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: center; margin-bottom: 48px; }
+  @media (max-width: 900px) { #habits-lab-embed .hero-grid { grid-template-columns: 1fr; } }
+  #habits-lab-embed .hero-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-strong);
+    border: 1px solid var(--accent);
+    padding: 5px 12px;
+    margin-bottom: 26px;
+  }
+  #habits-lab-embed .hero h1 {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: clamp(2rem, 4.4vw, 3.1rem);
+    line-height: 1.14;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    max-width: 15ch;
+    margin: 0 0 24px;
+  }
+  #habits-lab-embed .hero h1 em {
+    font-style: normal;
+    background: var(--accent-tint);
+    box-shadow: var(--glow);
+    padding: 0 6px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  #habits-lab-embed .hero-sub {
+    font-size: 1.12rem;
+    color: var(--ink-soft);
+    max-width: 52ch;
+    margin: 0 0 36px;
+  }
+  #habits-lab-embed .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
+  #habits-lab-embed .btn {
+    font-family: var(--mono);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 13px 22px;
+    display: inline-block;
+    border: 1px solid var(--ink);
+    transition: transform 0.12s ease, background 0.12s ease, color 0.12s ease;
+  }
+  #habits-lab-embed .btn:hover { transform: translateY(-2px); }
+  #habits-lab-embed .btn-primary { background: var(--ink); color: var(--paper-raised); }
+  #habits-lab-embed .btn-primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); color: var(--accent-ink); box-shadow: var(--glow); }
+  #habits-lab-embed .btn-ghost { background: transparent; color: var(--ink); }
+  #habits-lab-embed .btn-ghost:hover { border-color: var(--accent); color: var(--accent-strong); box-shadow: var(--glow); }
+
+  #habits-lab-embed .spec-sheet {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+  #habits-lab-embed .spec-cell {
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 16px 18px;
+  }
+  #habits-lab-embed .spec-k {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  #habits-lab-embed .spec-v {
+    font-family: var(--mono);
+    font-size: 1.3rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-strong);
+  }
+  @media (max-width: 640px) { #habits-lab-embed .spec-sheet { grid-template-columns: repeat(2, 1fr); } }
+
+  
+  #habits-lab-embed .tracker-preview {
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    box-shadow: var(--shadow);
+  }
+  #habits-lab-embed .preview-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-alt);
+  }
+  #habits-lab-embed .preview-bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); display: inline-block; }
+  #habits-lab-embed .preview-bar-title {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
+  }
+  #habits-lab-embed .preview-body { padding: 8px 16px 16px; }
+  #habits-lab-embed .preview-row {
+    display: grid;
+    grid-template-columns: 1.3fr repeat(7, 20px) 46px;
+    align-items: center;
+    gap: 5px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  #habits-lab-embed .preview-row:last-child { border-bottom: none; }
+  #habits-lab-embed .preview-head {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+  #habits-lab-embed .preview-head span { text-align: center; }
+  #habits-lab-embed .preview-head span:first-child, #habits-lab-embed .preview-head span:last-child { text-align: left; }
+  #habits-lab-embed .preview-habit { font-size: 0.85rem; }
+  #habits-lab-embed .chk {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    justify-self: center;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.12s ease, border-color 0.12s ease, transform 0.08s ease;
+  }
+  #habits-lab-embed .chk:hover { border-color: var(--accent); transform: scale(1.15); }
+  #habits-lab-embed .chk:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  #habits-lab-embed .chk.on { background: var(--accent); border-color: var(--accent-strong); }
+  #habits-lab-embed .preview-streak {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--accent-strong);
+    transition: color 0.15s ease;
+  }
+  #habits-lab-embed .preview-streak.bump { color: var(--ink); text-shadow: 0 0 12px rgba(255, 46, 66, 0.9); }
+  #habits-lab-embed .preview-hint {
+    text-align: center;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    padding: 10px 0 14px;
+  }
+
+  
+  #habits-lab-embed .section { padding: 72px 0; border-bottom: 1px dashed var(--line); }
+  #habits-lab-embed .section-alt { background: var(--paper-alt); }
+  #habits-lab-embed .section-head { margin-bottom: 44px; }
+  #habits-lab-embed .section-kicker {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-strong);
+    display: block;
+    margin-bottom: 10px;
+  }
+  #habits-lab-embed .section-title {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+    margin: 0 0 12px;
+    text-wrap: balance;
+  }
+  #habits-lab-embed .section-sub { color: var(--ink-soft); max-width: 58ch; }
+
+  
+  #habits-lab-embed .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+    perspective: 1200px;
+  }
+  @media (max-width: 940px) { #habits-lab-embed .tier-grid { grid-template-columns: 1fr; } }
+
+  #habits-lab-embed .tier-card {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--ink-faint);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    animation: card-in 0.5s ease both;
+    transition: transform 0.15s ease-out, box-shadow 0.22s ease, border-color 0.22s ease;
+    will-change: transform;
+  }
+  #habits-lab-embed .tier-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+  #habits-lab-embed .tier-card.tier-premium { border-top-color: var(--accent); }
+  #habits-lab-embed .tier-card.tier-deluxe { border-top-color: var(--gold); box-shadow: var(--shadow), var(--glow); }
+  #habits-lab-embed .tier-card.tier-deluxe:hover { box-shadow: var(--shadow-hover), var(--glow-strong); }
+  #habits-lab-embed .tier-card:nth-child(1) { animation-delay: 0s; }
+  #habits-lab-embed .tier-card:nth-child(2) { animation-delay: 0.08s; }
+  #habits-lab-embed .tier-card:nth-child(3) { animation-delay: 0.16s; }
+  @keyframes card-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) { #habits-lab-embed .tier-card { transition: none; } }
+
+  #habits-lab-embed .tier-tag {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--paper-raised);
+    background: var(--ink);
+    padding: 9px 16px;
+    align-self: flex-start;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 10px 100%, 0 70%);
+  }
+  #habits-lab-embed .tier-card.tier-premium .tier-tag { background: var(--accent-strong); }
+  #habits-lab-embed .tier-card.tier-deluxe .tier-tag { background: var(--gold-strong); color: var(--accent-ink); }
+  #habits-lab-embed .featured-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-strong);
+    background: var(--accent-tint);
+    padding: 3px 10px;
+    margin-left: 10px;
+  }
+
+  #habits-lab-embed .tier-body { padding: 26px 26px 24px; display: flex; flex-direction: column; flex-grow: 1; }
+
+  #habits-lab-embed .tier-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line);
+    background: var(--paper-alt);
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  #habits-lab-embed .tier-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  #habits-lab-embed .tier-card.tier-premium .tier-icon { color: var(--accent-strong); border-color: var(--accent); }
+  #habits-lab-embed .tier-card.tier-deluxe .tier-icon { color: var(--gold-strong); border-color: var(--gold); }
+  #habits-lab-embed .tier-card.tier-deluxe .tier-icon svg { fill: currentColor; stroke: none; }
+
+  #habits-lab-embed .tier-name { font-size: 1.3rem; font-weight: 700; margin: 4px 0 6px; }
+  #habits-lab-embed .tier-tool { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--ink-faint); text-transform: uppercase; margin-bottom: 18px; }
+
+  #habits-lab-embed .tier-price {
+    font-family: var(--mono);
+    font-size: 2rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-strong);
+    margin-bottom: 16px;
+  }
+  #habits-lab-embed .tier-card.tier-basic .tier-price { color: var(--ink); }
+  #habits-lab-embed .tier-card.tier-deluxe .tier-price { color: var(--gold-strong); }
+  #habits-lab-embed .tier-price span { color: var(--ink-faint); font-weight: 400; font-size: 1.1rem; margin: 0 3px; }
+
+  #habits-lab-embed .tier-desc { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 20px; }
+
+  #habits-lab-embed .tier-features { list-style: none; margin: 0 0 22px; padding: 0; flex-grow: 1; }
+  #habits-lab-embed .tier-features li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 11px;
+    font-size: 0.92rem;
+  }
+  #habits-lab-embed .tier-features li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-family: var(--mono);
+  }
+  #habits-lab-embed .tier-card.tier-basic .tier-features li::before { color: var(--ink-faint); }
+  #habits-lab-embed .tier-card.tier-deluxe .tier-features li::before { color: var(--gold-strong); }
+
+  #habits-lab-embed .tier-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--line-soft);
+    padding-top: 14px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  #habits-lab-embed .tier-compare-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  #habits-lab-embed .tier-compare-link:hover { color: var(--accent-strong); }
+  #habits-lab-embed .tier-compare-link svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; transition: transform 0.15s ease; }
+  #habits-lab-embed .tier-compare-link:hover svg { transform: translateX(3px); }
+
+  
+  #habits-lab-embed .table-scroll { overflow-x: auto; border: 1px solid var(--line); background: var(--paper-raised); }
+  #habits-lab-embed .compare-table { width: 100%; border-collapse: collapse; min-width: 640px; }
+  #habits-lab-embed .compare-table th, #habits-lab-embed .compare-table td {
+    text-align: left;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+  }
+  #habits-lab-embed .compare-table td.col-hover, #habits-lab-embed .compare-table th.col-hover { background: var(--accent-tint); }
+  #habits-lab-embed .compare-table thead th {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    background: var(--paper-alt);
+    border-bottom: 1px solid var(--line);
+  }
+  #habits-lab-embed .compare-table td:first-child, #habits-lab-embed .compare-table th:first-child {
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+  #habits-lab-embed .compare-table tbody tr:last-child td { border-bottom: none; }
+  #habits-lab-embed .compare-table td.num { font-variant-numeric: tabular-nums; }
+
+  
+  #habits-lab-embed .week-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 40px; }
+  #habits-lab-embed .week-tab {
+    font-family: var(--mono);
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    transition: all 0.15s ease;
+  }
+  #habits-lab-embed .week-tab:hover { border-color: var(--accent); color: var(--accent-strong); }
+  #habits-lab-embed .week-tab.active { background: var(--ink); border-color: var(--ink); color: var(--paper-raised); }
+
+  #habits-lab-embed .day-list { display: none; list-style: none; margin: 0; padding: 0; max-width: 700px; }
+  #habits-lab-embed .day-list.active { display: block; }
+  #habits-lab-embed .day-list li {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 18px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  #habits-lab-embed .day-list li:first-child { border-top: 1px solid var(--line-soft); }
+  #habits-lab-embed .day-num {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--ink-faint);
+    padding-left: 12px;
+    border-left: 2px solid var(--line);
+  }
+  #habits-lab-embed .day-list li.buffer .day-num { color: var(--accent-strong); border-left-color: var(--accent); }
+  #habits-lab-embed .day-list li div:last-child { color: var(--ink-soft); font-size: 0.94rem; }
+  #habits-lab-embed .day-list li strong { color: var(--ink); font-weight: 700; }
+
+  #habits-lab-embed .log-note {
+    max-width: 700px;
+    margin: 48px 0 0;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    padding: 26px 28px;
+  }
+  #habits-lab-embed .log-note h3 { font-family: var(--mono); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 16px; }
+  #habits-lab-embed .log-note ul { padding-left: 18px; margin: 0; color: var(--ink-soft); font-size: 0.92rem; }
+  #habits-lab-embed .log-note li { margin-bottom: 8px; }
+  #habits-lab-embed .log-note strong { color: var(--ink); }
+
+  
+  #habits-lab-embed .protocol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  @media (max-width: 800px) { #habits-lab-embed .protocol-grid { grid-template-columns: 1fr; } }
+  #habits-lab-embed .protocol-card { border: 1px solid var(--line); background: var(--paper-raised); padding: 28px 30px; }
+  #habits-lab-embed .protocol-card h3 {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  #habits-lab-embed .stamp { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 2px solid currentColor; border-radius: 50%; font-size: 0.7rem; font-weight: 700; }
+  #habits-lab-embed .protocol-card.no h3 { color: var(--accent-strong); }
+  #habits-lab-embed .protocol-card.yes h3 { color: var(--verify); }
+  #habits-lab-embed .protocol-card ul { list-style: none; margin: 0; padding: 0; }
+  #habits-lab-embed .protocol-card li { padding: 13px 0; border-bottom: 1px solid var(--line-soft); color: var(--ink-soft); font-size: 0.94rem; }
+  #habits-lab-embed .protocol-card li:last-child { border-bottom: none; }
+
+  
+  #habits-lab-embed .site-footer { padding: 40px 0; }
+  #habits-lab-embed .footer-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    color: var(--ink-faint);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+  }
+  #habits-lab-embed .footer-inner .brand-text { color: var(--ink-soft); letter-spacing: 0.12em; }
+
+  @keyframes row-flash {
+    0% { background-color: transparent; }
+    25% { background-color: var(--accent-tint); box-shadow: inset 0 0 24px rgba(255, 46, 66, 0.5); }
+    100% { background-color: transparent; box-shadow: none; }
+  }
+  #habits-lab-embed .preview-row.flash { animation: row-flash 0.9s ease; }
+
+</style>
+
+
+<div id="habits-lab-embed">
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 3a1 1 0 1 0 0 2h1v5.28L4.9 19.2A2 2 0 0 0 6.6 22.3h10.8a2 2 0 0 0 1.7-3.1L14 10.28V5h1a1 1 0 1 0 0-2H9z"></path></svg></span>
+      <span class="brand-text">THE HABITS LAB</span>
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="#tiers">Tiers</a>
+      <a href="#compare">Compare</a>
+      <a href="#log">Build Log</a>
+      <a href="#protocol">Protocol</a>
+    </nav>
+    <a class="nav-cta" href="#tiers">See Pricing</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="hero-tag">Habit Tracker Product Suite</span>
+          <h1>One habit tracker.<br>Basic, Premium, <em>or Deluxe.</em></h1>
+          <p class="hero-sub">
+            Check a box, keep a streak — that's the whole job. We sell that job three ways:
+            a $5 Notion tracker, a $19–29 analytics dashboard, and a $47–67 gamified system
+            with XP and levels.
+          </p>
+          <div class="hero-actions">
+            <a href="#tiers" class="btn btn-primary">Compare the 3 tiers</a>
+            <a href="#log" class="btn btn-ghost">See the build log</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="tracker-preview">
+            <div class="preview-bar"><i></i><i></i><i></i><span class="preview-bar-title">HABIT TRACKER · WEEK 14</span></div>
+            <div class="preview-body">
+              <div class="preview-row preview-head">
+                <span>Habit</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span><span>Streak</span>
+              </div>
+              <div class="preview-row">
+                <span class="preview-habit">Morning run</span>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Monday, Morning run"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Tuesday, Morning run"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Wednesday, Morning run"></button>
+                <button type="button" class="chk" aria-pressed="false" aria-label="Thursday, Morning run"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Friday, Morning run"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Saturday, Morning run"></button>
+                <button type="button" class="chk" aria-pressed="false" aria-label="Sunday, Morning run"></button>
+                <span class="preview-streak">12</span>
+              </div>
+              <div class="preview-row">
+                <span class="preview-habit">Read 20 pages</span>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Monday, Read 20 pages"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Tuesday, Read 20 pages"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Wednesday, Read 20 pages"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Thursday, Read 20 pages"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Friday, Read 20 pages"></button>
+                <button type="button" class="chk" aria-pressed="false" aria-label="Saturday, Read 20 pages"></button>
+                <button type="button" class="chk" aria-pressed="false" aria-label="Sunday, Read 20 pages"></button>
+                <span class="preview-streak">8</span>
+              </div>
+              <div class="preview-row">
+                <span class="preview-habit">Meditate</span>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Monday, Meditate"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Tuesday, Meditate"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Wednesday, Meditate"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Thursday, Meditate"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Friday, Meditate"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Saturday, Meditate"></button>
+                <button type="button" class="chk on" aria-pressed="true" aria-label="Sunday, Meditate"></button>
+                <span class="preview-streak">21</span>
+              </div>
+            </div>
+            <div class="preview-hint mono">Try it — click a box</div>
+          </div>
+        </div>
+      </div>
+      <div class="spec-sheet">
+        <div class="spec-cell"><span class="spec-k">Tiers</span><span class="spec-v">03</span></div>
+        <div class="spec-cell"><span class="spec-k">Build window</span><span class="spec-v" data-count-to="21" data-suffix=" days">21 days</span></div>
+        <div class="spec-cell"><span class="spec-k">Price range</span><span class="spec-v">$5–$67</span></div>
+        <div class="spec-cell"><span class="spec-k">Tooling</span><span class="spec-v">Notion + Sheets</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tiers" class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-kicker">Habit tracker lineup</span>
+        <h2 class="section-title">Basic, Premium, or Deluxe</h2>
+        <p class="section-sub">Same habit tracker at heart — mark a habit, keep a streak — three tiers of depth and price.</p>
+      </div>
+
+      <div class="tier-grid">
+
+        <article class="tier-card tier-basic">
+          <span class="tier-tag mono">Tier 1 — Basic</span>
+          <div class="tier-body">
+            <div class="tier-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><polyline points="7 12 10 15 17 8"></polyline></svg>
+            </div>
+            <h3 class="tier-name">Minimal Notion Tracker</h3>
+            <div class="tier-tool">Built in Notion</div>
+            <div class="tier-price">$5<span>–</span>$10</div>
+            <p class="tier-desc">A clean, duplicable page. The fastest build, the cheapest buy, and the trust-builder that funnels people toward Premium and Deluxe.</p>
+            <ul class="tier-features">
+              <li>7-day checkbox grid (Mon–Sun) per habit</li>
+              <li>Optional Category select field</li>
+              <li>Manual streak counter — honest, not fragile</li>
+              <li>Weekly summary view with % complete rollup</li>
+              <li>One accent colour, grayscale icons throughout</li>
+              <li>One-click "duplicate as template" delivery</li>
+            </ul>
+            <div class="tier-meta"><span>Build 3–5h</span><span>Ships D+3</span></div>
+            <button type="button" class="tier-compare-link" data-jump-col="1">See it in the comparison <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+          </div>
+        </article>
+
+        <article class="tier-card tier-premium tier-featured">
+          <span class="tier-tag mono">Tier 2 — Premium<span class="featured-badge">Most photographed</span></span>
+          <div class="tier-body">
+            <div class="tier-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><line x1="4" y1="20" x2="4" y2="12"></line><line x1="12" y1="20" x2="12" y2="5"></line><line x1="20" y1="20" x2="20" y2="9"></line></svg>
+            </div>
+            <h3 class="tier-name">Aesthetic Analytics Suite</h3>
+            <div class="tier-tool">Built in Google Sheets</div>
+            <div class="tier-price">$19<span>–</span>$29</div>
+            <p class="tier-desc">A real analytics dashboard, not just a grid. Buyers screenshot it and post it — that's the whole marketing engine.</p>
+            <ul class="tier-features">
+              <li>Dashboard, Daily Log, Monthly Review, Settings tabs</li>
+              <li>Line chart of monthly consistency trend</li>
+              <li>Bar chart of completion rate by category</li>
+              <li>Mood/energy vs. completion, with real <code>=CORREL()</code></li>
+              <li>Inline <code>=SPARKLINE()</code> mini progress bars</li>
+              <li>Auto-pulled top/bottom habits via <code>=SORT()</code> / <code>=QUERY()</code></li>
+              <li>Protected formula ranges — buyers can't break it</li>
+            </ul>
+            <div class="tier-meta"><span>Build 8–14h</span><span>Ships D+10</span></div>
+            <button type="button" class="tier-compare-link" data-jump-col="2">See it in the comparison <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+          </div>
+        </article>
+
+        <article class="tier-card tier-deluxe">
+          <span class="tier-tag mono">Tier 3 — Deluxe</span>
+          <div class="tier-body">
+            <div class="tier-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9"></polygon></svg>
+            </div>
+            <h3 class="tier-name">Gamified RPG Ecosystem</h3>
+            <div class="tier-tool">Notion + PDF/Video</div>
+            <div class="tier-price">$47<span>–</span>$67</div>
+            <p class="tier-desc">Habits reskinned as a game: quests, XP, levels, a boss-goal map. Notion and good formulas — no custom software.</p>
+            <ul class="tier-features">
+              <li>Character Sheet — Level, XP bar, streak "health bar"</li>
+              <li>Daily Quests — habits carrying XP values</li>
+              <li>Goal Map — quests → milestones → Boss Goals via relations</li>
+              <li>Time-Block Planner calendar view</li>
+              <li>Level = <code>floor(Total XP / 100)</code>, visual XP bar</li>
+              <li>Badge gallery, unlocked by XP threshold</li>
+              <li>Licensed custom icon pack</li>
+              <li>15–25 pg guidebook or 15–20 min walkthrough video</li>
+            </ul>
+            <div class="tier-meta"><span>Build 20–35h</span><span>Ships D+21</span></div>
+            <button type="button" class="tier-compare-link" data-jump-col="3">See it in the comparison <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="compare" class="section section-alt">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-kicker">Spec sheet</span>
+        <h2 class="section-title">Side by side</h2>
+      </div>
+      <p class="section-sub" style="margin-bottom:24px;">Hover a column, or click "see it in the comparison" on any tier card above, to line it up against the other two.</p>
+      <div class="table-scroll">
+        <table class="compare-table" id="compare-table">
+          <thead>
+            <tr><th>&nbsp;</th><th data-col="1">Basic</th><th data-col="2">Premium</th><th data-col="3">Deluxe</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Price</td><td class="num" data-col="1">$5–$10</td><td class="num" data-col="2">$19–$29</td><td class="num" data-col="3">$47–$67</td></tr>
+            <tr><td>Tool</td><td data-col="1">Notion</td><td data-col="2">Google Sheets</td><td data-col="3">Notion + PDF/Video</td></tr>
+            <tr><td>Build time</td><td class="num" data-col="1">3–5 hrs</td><td class="num" data-col="2">8–14 hrs</td><td class="num" data-col="3">20–35 hrs</td></tr>
+            <tr><td>Ships</td><td data-col="1">Day 3</td><td data-col="2">Day 10</td><td data-col="3">Day 21</td></tr>
+            <tr><td>Streak tracking</td><td data-col="1">Manual counter</td><td data-col="2">Chart-driven trend</td><td data-col="3">XP + level system</td></tr>
+            <tr><td>Analytics</td><td data-col="1">Basic % complete</td><td data-col="2">Correlation, sparklines, category breakdown</td><td data-col="3">XP rollups, quest progress</td></tr>
+            <tr><td>Visual identity</td><td data-col="1">One accent colour</td><td data-col="2">Full palette + typography pass</td><td data-col="3">Custom licensed icon pack</td></tr>
+            <tr><td>Extras</td><td data-col="1">—</td><td data-col="2">Protected formula cells</td><td data-col="3">Badges, guidebook/video, Boss Goals</td></tr>
+            <tr><td>Best for</td><td data-col="1">Trying the system out</td><td data-col="2">People who like data</td><td data-col="3">People who need a game to stay consistent</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="log" class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-kicker">Build log</span>
+        <h2 class="section-title">The 21-day build &amp; launch schedule</h2>
+        <p class="section-sub">1.5–3 hours a day. Buffer days on 7 and 14. Everything live by day 21. Sequence-dependent, not clock-dependent.</p>
+      </div>
+
+      <div class="week-tabs" role="tablist" aria-label="Build plan weeks">
+        <button class="week-tab active" data-week="1" role="tab" aria-selected="true">Week 1 — Ship Basic</button>
+        <button class="week-tab" data-week="2" role="tab" aria-selected="false">Week 2 — Finish Premium</button>
+        <button class="week-tab" data-week="3" role="tab" aria-selected="false">Week 3 — Launch Deluxe</button>
+      </div>
+
+      <div class="week-panels">
+        <ol class="day-list active" data-week-panel="1">
+          <li><span class="day-num">D1</span><div><strong>Build the Basic core.</strong> Habit database and the 7-day checklist.</div></li>
+          <li><span class="day-num">D2</span><div><strong>Finish Basic styling.</strong> Weekly summary view, then duplicate-test it.</div></li>
+          <li><span class="day-num">D3</span><div><strong>List Basic.</strong> Write the listing, mock a thumbnail, publish to Etsy/Gumroad/Notion marketplace.</div></li>
+          <li><span class="day-num">D4</span><div><strong>Start Premium.</strong> Daily Log tab and checkbox habit columns.</div></li>
+          <li><span class="day-num">D5</span><div><strong>Build the Dashboard.</strong> Line chart plus bar chart.</div></li>
+          <li><span class="day-num">D6</span><div><strong>Correlation section.</strong> Mood/energy vs. completion, plus category tagging.</div></li>
+          <li class="buffer"><span class="day-num">D7</span><div><strong>Buffer day.</strong> Catch up on overflow, answer early Basic buyer questions.</div></li>
+        </ol>
+
+        <ol class="day-list" data-week-panel="2">
+          <li><span class="day-num">D8</span><div><strong>Monthly Review tab.</strong> Auto-pull formulas for top/bottom habits.</div></li>
+          <li><span class="day-num">D9</span><div><strong>Full styling pass.</strong> Colours, fonts, protect the formula cells.</div></li>
+          <li><span class="day-num">D10</span><div><strong>QA and launch Premium.</strong> Fresh duplicate test, fix breakages, publish the listing.</div></li>
+          <li><span class="day-num">D11</span><div><strong>Deluxe foundations.</strong> Character Sheet and Daily Quests database.</div></li>
+          <li><span class="day-num">D12</span><div><strong>XP system.</strong> XP rollup, Level formula, progress bar.</div></li>
+          <li><span class="day-num">D13</span><div><strong>Goal Map.</strong> Relations and rollups linking quests → milestones → Boss Goals.</div></li>
+          <li class="buffer"><span class="day-num">D14</span><div><strong>Buffer day.</strong></div></li>
+        </ol>
+
+        <ol class="day-list" data-week-panel="3">
+          <li><span class="day-num">D15</span><div><strong>Time-Block Planner.</strong> Calendar/timeline view for habit time slots.</div></li>
+          <li><span class="day-num">D16</span><div><strong>Icon pack.</strong> Source or design it, apply across the Deluxe dashboard.</div></li>
+          <li><span class="day-num">D17</span><div><strong>Badge gallery.</strong> XP-threshold reveal logic.</div></li>
+          <li><span class="day-num">D18</span><div><strong>Write the guidebook.</strong> Or script the walkthrough video.</div></li>
+          <li><span class="day-num">D19</span><div><strong>Finish the guide or video.</strong> Export as PDF or upload.</div></li>
+          <li><span class="day-num">D20</span><div><strong>Full QA pass.</strong> Fresh duplicate test — click every link, relation, and rollup.</div></li>
+          <li><span class="day-num">D21</span><div><strong>Launch.</strong> Write the Deluxe listing, publish, cross-link all three tiers for upsells.</div></li>
+        </ol>
+      </div>
+
+      <div class="log-note">
+        <h3>After launch — the daily 15–30 min routine</h3>
+        <ul>
+          <li><strong>Same-day support.</strong> Answer buyer questions the day they come in.</li>
+          <li><strong>Follow the sales.</strong> Whichever tier sells best, double down there next.</li>
+          <li><strong>Weekly review.</strong> Read reviews once a week, log feature requests for v2.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="protocol" class="section section-alt">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-kicker">Lab protocol</span>
+        <h2 class="section-title">What's rationed, and what never is</h2>
+      </div>
+      <div class="protocol-grid">
+        <div class="protocol-card no">
+          <h3><span class="stamp">✕</span> Do not over-invest</h3>
+          <ul>
+            <li>No real animated app for Deluxe — Notion and good formulas already reads as "gamified."</li>
+            <li>No hand-built Excel version of Premium until Basic proves people are buying.</li>
+            <li>No skipping the fresh-duplicate test — it's the number one source of refund requests.</li>
+          </ul>
+        </div>
+        <div class="protocol-card yes">
+          <h3><span class="stamp">✓</span> Non-negotiable, every tier</h3>
+          <ul>
+            <li>Duplicated into a blank workspace and clicked through, end to end.</li>
+            <li>One consistent visual identity, not a grab-bag of colours.</li>
+            <li>A delivery mechanism that works the moment a buyer clicks it.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div><span class="brand-mark"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 3a1 1 0 1 0 0 2h1v5.28L4.9 19.2A2 2 0 0 0 6.6 22.3h10.8a2 2 0 0 0 1.7-3.1L14 10.28V5h1a1 1 0 1 0 0-2H9z"></path></svg></span> <span class="brand-text">THE HABITS LAB</span></div>
+    <p>Three tiers. One system. Built in Notion &amp; Google Sheets.</p>
+  </div>
+</footer>
+
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const root = document.getElementById("habits-lab-embed");
+    if (!root) return;
+    const tabs = root.querySelectorAll(".week-tab");
+    const panels = root.querySelectorAll(".day-list");
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const week = tab.dataset.week;
+        tabs.forEach((t) => { t.classList.remove("active"); t.setAttribute("aria-selected", "false"); });
+        tab.classList.add("active");
+        tab.setAttribute("aria-selected", "true");
+        panels.forEach((panel) => panel.classList.toggle("active", panel.dataset.weekPanel === week));
+      });
+    });
+
+    // Interactive habit-tracker preview: click a box, watch the streak move.
+    root.querySelectorAll(".preview-row:not(.preview-head)").forEach((row) => {
+      const streakEl = row.querySelector(".preview-streak");
+      const boxes = Array.from(row.querySelectorAll(".chk"));
+      boxes.forEach((box) => {
+        box.addEventListener("click", () => {
+          const turningOn = !box.classList.contains("on");
+          box.classList.toggle("on", turningOn);
+          box.setAttribute("aria-pressed", String(turningOn));
+          const current = parseInt(streakEl.textContent, 10) || 0;
+          streakEl.textContent = Math.max(0, current + (turningOn ? 1 : -1));
+          streakEl.classList.remove("bump");
+          void streakEl.offsetWidth;
+          streakEl.classList.add("bump");
+
+          if (boxes.every((b) => b.classList.contains("on"))) {
+            row.classList.remove("flash");
+            void row.offsetWidth;
+            row.classList.add("flash");
+          }
+        });
+      });
+    });
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Hero cursor glow.
+    const hero = root.querySelector(".hero");
+    if (hero && !reduceMotion) {
+      hero.addEventListener("mousemove", (e) => {
+        const rect = hero.getBoundingClientRect();
+        hero.style.setProperty("--mx", (e.clientX - rect.left) + "px");
+        hero.style.setProperty("--my", (e.clientY - rect.top) + "px");
+      });
+    }
+
+    // Tier cards: subtle pointer-tracking tilt.
+    if (!reduceMotion) {
+      root.querySelectorAll(".tier-card").forEach((card) => {
+        card.addEventListener("mousemove", (e) => {
+          const rect = card.getBoundingClientRect();
+          const px = (e.clientX - rect.left) / rect.width - 0.5;
+          const py = (e.clientY - rect.top) / rect.height - 0.5;
+          card.style.transform = "translateY(-6px) rotateX(" + (py * -7) + "deg) rotateY(" + (px * 7) + "deg)";
+        });
+        card.addEventListener("mouseleave", () => { card.style.transform = ""; });
+      });
+    }
+
+    // Compare table: hovering a column header highlights that tier's column.
+    const compareTable = root.querySelector("#compare-table");
+    if (compareTable) {
+      const setCol = (col, on) => {
+        compareTable.querySelectorAll('[data-col="' + col + '"]').forEach((cell) => {
+          cell.classList.toggle("col-hover", on);
+        });
+      };
+      compareTable.querySelectorAll("thead [data-col]").forEach((th) => {
+        th.addEventListener("mouseenter", () => setCol(th.dataset.col, true));
+        th.addEventListener("mouseleave", () => setCol(th.dataset.col, false));
+      });
+
+      root.querySelectorAll(".tier-compare-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          const col = link.dataset.jumpCol;
+          root.querySelector("#compare").scrollIntoView({ behavior: "smooth", block: "start" });
+          setCol(col, true);
+          setTimeout(() => setCol(col, false), 1600);
+        });
+      });
+    }
+
+    // Spec-sheet: count up the numeric stats on load.
+    root.querySelectorAll(".spec-v[data-count-to]").forEach((el) => {
+      const target = parseInt(el.dataset.countTo, 10);
+      const suffix = el.dataset.suffix || "";
+      const duration = 700;
+      const start = performance.now();
+      const step = (now) => {
+        const progress = Math.min(1, (now - start) / duration);
+        el.textContent = Math.round(target * progress) + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Habits Lab Landing",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Habits Lab Landing"
+    }
+  ]
+}
+{% endschema %}
