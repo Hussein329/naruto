@@ -10,8 +10,9 @@ A small Cloudflare Worker that turns "Shopify says this order is paid" into
    Worker. The Worker verifies Shopify's signature, reads the paid line
    item's SKU (`basic` / `premium` / `deluxe`), and stores
    `order ID → tier` in KV.
-3. Shopify's Order status page script (added in Shopify admin) redirects the
-   customer back to the site with `?order=<id>`.
+3. Shopify's Order status page (added in Shopify admin) shows a button —
+   "Access your Basic/Premium/Deluxe tracker" — linking to the site with
+   `?order=<id>`. No auto-redirect; the customer clicks it when ready.
 4. The site calls `GET /api/check-unlock?order=<id>` on this Worker. Only if
    the Worker confirms that order was really paid does the page unlock.
 
@@ -45,20 +46,31 @@ wrangler deploy
    - Format: JSON
    - URL: `https://<your-worker-url>/webhook/orders-paid`
    - Copy the signing secret shown once — that's `SHOPIFY_WEBHOOK_SECRET` above.
-3. **Order status page redirect**: Settings → Checkout → Order status page →
-   Additional scripts. Paste:
+3. **Order status page access button**: Settings → Checkout → Order status
+   page → Additional scripts. Paste (this only shows a button — it never
+   auto-redirects anyone):
 
-   ```html
-   <script>
-     (function () {
-       var orderId = {{ checkout.order_id | json }};
-       var siteUrl = "https://YOUR-SITE-URL"; // e.g. https://yourname.github.io/naruto
-       if (orderId) {
-         window.location.href = siteUrl + "/?order=" + orderId + "#app";
-       }
-     })();
-   </script>
+   ```liquid
+   {% assign tier = "" %}
+   {% assign tier_label = "" %}
+   {% for line in checkout.line_items %}
+     {% if line.product.handle == "basic-tracker" %}{% assign tier = "basic" %}{% assign tier_label = "Basic" %}{% endif %}
+     {% if line.product.handle == "premium-tracker" %}{% assign tier = "premium" %}{% assign tier_label = "Premium" %}{% endif %}
+     {% if line.product.handle == "deluxe-tracker" %}{% assign tier = "deluxe" %}{% assign tier_label = "Deluxe" %}{% endif %}
+   {% endfor %}
+
+   {% if tier != "" %}
+     <div style="margin-top:24px;padding:24px;border:1px solid #2a2a2b;background:#0c0c0d;text-align:center;font-family:sans-serif;">
+       <p style="color:#f4f1ee;margin:0 0 14px;">Your {{ tier_label }} tracker is ready.</p>
+       <a href="https://YOUR-SITE-URL/?order={{ checkout.order_id }}#app"
+          style="display:inline-block;font-family:monospace;text-transform:uppercase;letter-spacing:.06em;padding:12px 22px;background:#ff2e42;color:#0a0a0a;text-decoration:none;">
+         Access your {{ tier_label }} tracker →
+       </a>
+     </div>
+   {% endif %}
    ```
+
+   Replace `YOUR-SITE-URL` with the real public URL of the site.
 
 ## Then, in `index.html`
 
