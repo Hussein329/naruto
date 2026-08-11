@@ -339,6 +339,7 @@
   @media (max-width: 940px) { .tier-grid { grid-template-columns: 1fr; } }
 
   .tier-card {
+    position: relative;
     background: var(--paper-raised);
     border: 1px solid var(--line);
     border-top: 4px solid var(--ink-faint);
@@ -346,13 +347,29 @@
     display: flex;
     flex-direction: column;
     animation: card-in 0.5s ease both;
-    transition: transform 0.15s ease-out, box-shadow 0.22s ease, border-color 0.22s ease;
+    transition: transform 0.15s ease-out, box-shadow 0.22s ease, border-color 0.22s ease, opacity 0.2s ease, filter 0.2s ease;
     will-change: transform;
   }
   .tier-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
   .tier-card.tier-premium { border-top-color: var(--accent); }
   .tier-card.tier-deluxe { border-top-color: var(--gold); box-shadow: var(--shadow), var(--glow); }
   .tier-card.tier-deluxe:hover { box-shadow: var(--shadow-hover), var(--glow-strong); }
+  .tier-card.locked-out { opacity: 0.6; filter: grayscale(0.5); }
+  .tier-card.locked-out:hover { transform: none; }
+  .tier-card.owned-active { border-top-color: var(--accent-strong); box-shadow: var(--shadow), var(--glow); }
+
+  .plan-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border: 1px solid var(--line);
+    margin-bottom: 14px;
+  }
+  .plan-badge.active { background: var(--accent); border-color: var(--accent-strong); color: var(--accent-ink); box-shadow: var(--glow); }
+  .plan-badge.locked { background: var(--paper-alt); border-color: var(--line); color: var(--ink-faint); }
   .tier-card:nth-child(1) { animation-delay: 0s; }
   .tier-card:nth-child(2) { animation-delay: 0.08s; }
   .tier-card:nth-child(3) { animation-delay: 0.16s; }
@@ -476,6 +493,13 @@
   .tier-card.tier-premium .tier-demo-btn:hover { color: var(--accent-ink); }
   .tier-card.tier-deluxe .tier-demo-btn { border-color: var(--gold); color: var(--gold-strong); background: var(--gold-tint); }
   .tier-card.tier-deluxe .tier-demo-btn:hover { background: var(--gold-strong); color: var(--accent-ink); box-shadow: var(--glow-strong); }
+  .tier-demo-btn:disabled { cursor: not-allowed; opacity: 0.5; transform: none !important; box-shadow: none !important; }
+  .tier-demo-btn:disabled:hover { background: transparent; color: var(--ink); }
+  .tier-card.tier-basic .tier-demo-btn:disabled:hover { color: var(--ink); }
+  .tier-card.tier-premium .tier-demo-btn:disabled:hover { color: var(--accent-strong); background: transparent; }
+  .tier-card.tier-deluxe .tier-demo-btn:disabled:hover { background: var(--gold-tint); color: var(--gold-strong); box-shadow: none; }
+
+  .tier-gate.blocked { border-color: var(--ink-faint); }
 
   .tier-compare-link {
     display: inline-flex;
@@ -913,11 +937,11 @@
 
       <div class="app-panel active" id="app-panel-basic" role="tabpanel" aria-labelledby="app-tab-basic">
         <div class="tier-gate" id="bas-gate">
-          <div class="tier-gate-icon" aria-hidden="true">🔒</div>
-          <h3>Unlock the Basic tracker</h3>
-          <p>This version is for buyers. Pay once on HabitWell's secure Shopify checkout, and this page unlocks automatically when you land back here.</p>
+          <div class="tier-gate-icon" id="bas-gate-icon" aria-hidden="true">🔒</div>
+          <h3 id="bas-gate-title">Unlock the Basic tracker</h3>
+          <p id="bas-gate-desc">This version is for buyers. Pay once on HabitWell's secure Shopify checkout, and this page unlocks automatically when you land back here.</p>
           <a class="app-btn" id="bas-buy-btn" href="#" target="_blank" rel="noopener">Buy Basic on Shopify &middot; $10</a>
-          <p class="hint">Secure checkout hosted by Shopify &mdash; your card details never touch this site.</p>
+          <p class="hint" id="bas-gate-hint">Secure checkout hosted by Shopify &mdash; your card details never touch this site.</p>
         </div>
         <div class="tier-content" id="bas-content">
         <div class="panel">
@@ -954,11 +978,11 @@
 
       <div class="app-panel" id="app-panel-premium" role="tabpanel" aria-labelledby="app-tab-premium" hidden>
         <div class="tier-gate" id="prem-gate">
-          <div class="tier-gate-icon" aria-hidden="true">🔒</div>
-          <h3>Unlock the Premium dashboard</h3>
-          <p>This version is for buyers. Pay once on HabitWell's secure Shopify checkout, and this page unlocks automatically when you land back here.</p>
+          <div class="tier-gate-icon" id="prem-gate-icon" aria-hidden="true">🔒</div>
+          <h3 id="prem-gate-title">Unlock the Premium dashboard</h3>
+          <p id="prem-gate-desc">This version is for buyers. Pay once on HabitWell's secure Shopify checkout, and this page unlocks automatically when you land back here.</p>
           <a class="app-btn" id="prem-buy-btn" href="#" target="_blank" rel="noopener">Buy Premium on Shopify &middot; $25</a>
-          <p class="hint">Secure checkout hosted by Shopify &mdash; your card details never touch this site.</p>
+          <p class="hint" id="prem-gate-hint">Secure checkout hosted by Shopify &mdash; your card details never touch this site.</p>
         </div>
         <div class="tier-content" id="prem-content">
         <div class="app-tabs" role="tablist" aria-label="Premium dashboard sections" style="margin-bottom:20px;">
@@ -1041,11 +1065,11 @@
 
       <div class="app-panel" id="app-panel-deluxe" role="tabpanel" aria-labelledby="app-tab-deluxe" hidden>
         <div class="tier-gate" id="dlx-gate">
-          <div class="tier-gate-icon" aria-hidden="true">🔒</div>
-          <h3>Unlock the Deluxe RPG</h3>
-          <p>This version is for buyers. Pay once on HabitWell's secure Shopify checkout, and this page unlocks automatically when you land back here.</p>
+          <div class="tier-gate-icon" id="dlx-gate-icon" aria-hidden="true">🔒</div>
+          <h3 id="dlx-gate-title">Unlock the Deluxe RPG</h3>
+          <p id="dlx-gate-desc">This version is for buyers. Pay once on HabitWell's secure Shopify checkout, and this page unlocks automatically when you land back here.</p>
           <a class="app-btn" id="dlx-buy-btn" href="#" target="_blank" rel="noopener">Buy Deluxe on Shopify &middot; $50</a>
-          <p class="hint">Secure checkout hosted by Shopify &mdash; your card details never touch this site.</p>
+          <p class="hint" id="dlx-gate-hint">Secure checkout hosted by Shopify &mdash; your card details never touch this site.</p>
         </div>
         <div class="tier-content" id="dlx-content">
         <div class="panel gilded">
@@ -1159,6 +1183,7 @@
             <h3 class="tier-name">Minimal Notion Tracker</h3>
             <div class="tier-tool">Built in Notion</div>
             <div class="tier-price">$10</div>
+            <span class="plan-badge" id="bas-plan-badge" hidden></span>
             <p class="tier-desc">A clean, duplicable page. The fastest build, the cheapest buy, and the trust-builder that funnels people toward Premium and Deluxe.</p>
             <ul class="tier-features">
               <li>7-day checkbox grid (Mon–Sun) per habit</li>
@@ -1183,6 +1208,7 @@
             <h3 class="tier-name">Aesthetic Analytics Suite</h3>
             <div class="tier-tool">Built in Google Sheets</div>
             <div class="tier-price">$25</div>
+            <span class="plan-badge" id="prem-plan-badge" hidden></span>
             <p class="tier-desc">A real analytics dashboard, not just a grid. Buyers screenshot it and post it — that's the whole marketing engine.</p>
             <ul class="tier-features">
               <li>Dashboard, Daily Log, Monthly Review, Settings tabs</li>
@@ -1208,6 +1234,7 @@
             <h3 class="tier-name">Gamified RPG Ecosystem</h3>
             <div class="tier-tool">Notion + PDF/Video</div>
             <div class="tier-price">$50</div>
+            <span class="plan-badge" id="dlx-plan-badge" hidden></span>
             <p class="tier-desc">Habits reskinned as a game: quests, XP, levels, a boss-goal map. Notion and good formulas — no custom software.</p>
             <ul class="tier-features">
               <li>Character Sheet — Level, XP bar, streak "health bar"</li>
@@ -1491,24 +1518,65 @@
     }
 
     // ---------- Purchase gate (per tier, remembered on this device) ----------
+    // Plans are exclusive: buying one tier locks the other two so the same
+    // person can't also buy — and can't be double-charged for — a second one.
+    const TIER_LABELS = { basic: "Basic", premium: "Premium", deluxe: "Deluxe" };
+    const TIER_GATE_NOUN = { basic: "the Basic tracker", premium: "the Premium dashboard", deluxe: "the Deluxe RPG" };
     function isUnlocked(tier) { return localStorage.getItem("habitslab_purchased_" + tier) === "true"; }
+    function ownedTier() { return ["basic", "premium", "deluxe"].find(isUnlocked) || null; }
+
     function applyGateState(tier) {
       const prefix = TIER_KEYS_LOOKUP[tier];
       const gate = document.getElementById(prefix + "-gate");
       const content = document.getElementById(prefix + "-content");
       const unlocked = isUnlocked(tier);
-      if (gate) gate.classList.toggle("hidden", unlocked);
+      const owned = ownedTier();
+      const blocked = !unlocked && owned && owned !== tier;
+
+      if (gate) { gate.classList.toggle("hidden", unlocked); gate.classList.toggle("blocked", blocked); }
       if (content) content.classList.toggle("unlocked", unlocked);
+
+      const icon = document.getElementById(prefix + "-gate-icon");
+      const title = document.getElementById(prefix + "-gate-title");
+      const desc = document.getElementById(prefix + "-gate-desc");
+      const buyBtn = document.getElementById(prefix + "-buy-btn");
+      const hint = document.getElementById(prefix + "-gate-hint");
+      if (blocked) {
+        if (icon) icon.textContent = "🚫";
+        if (title) title.textContent = TIER_LABELS[tier] + " is locked";
+        if (desc) desc.textContent = "You already have an active plan (" + TIER_LABELS[owned] + "). HabitWell plans are exclusive — one active tier per purchase.";
+        if (buyBtn) buyBtn.style.display = "none";
+        if (hint) hint.textContent = "Want to switch to " + TIER_LABELS[tier] + " instead? Contact support.";
+      } else {
+        if (icon) icon.textContent = "🔒";
+        if (title) title.textContent = "Unlock " + TIER_GATE_NOUN[tier];
+        if (desc) desc.textContent = "This version is for buyers. Pay once on HabitWell's secure Shopify checkout, and this page unlocks automatically when you land back here.";
+        if (buyBtn) { buyBtn.style.display = ""; buyBtn.href = shopifyCheckoutUrl(tier); }
+        if (hint) hint.textContent = "Secure checkout hosted by Shopify — your card details never touch this site.";
+      }
+
+      const card = document.querySelector(".tier-card.tier-" + tier);
       const cardBtn = document.querySelector('.tier-demo-btn[data-launch="' + tier + '"]');
-      if (cardBtn) cardBtn.textContent = unlocked ? "Open it ↓" : "Buy & use ↓";
+      const badge = document.getElementById(prefix + "-plan-badge");
+      if (card) { card.classList.toggle("locked-out", blocked); card.classList.toggle("owned-active", unlocked); }
+      if (cardBtn) {
+        cardBtn.disabled = blocked;
+        cardBtn.textContent = unlocked ? "Open it ↓" : blocked ? "Locked" : "Buy & use ↓";
+      }
+      if (badge) {
+        if (unlocked) { badge.textContent = "✓ Active Plan"; badge.className = "plan-badge active"; badge.hidden = false; }
+        else if (blocked) { badge.textContent = "🔒 Locked"; badge.className = "plan-badge locked"; badge.hidden = false; }
+        else { badge.hidden = true; }
+      }
     }
+    function refreshAllGates() { Object.keys(TIER_KEYS_LOOKUP).forEach(applyGateState); }
     function unlockTier(tier) {
       localStorage.setItem("habitslab_purchased_" + tier, "true");
-      applyGateState(tier);
+      refreshAllGates();
       const content = document.getElementById(TIER_KEYS_LOOKUP[tier] + "-content");
       if (content) content.querySelector("button, input, select, a")?.focus();
     }
-    Object.keys(TIER_KEYS_LOOKUP).forEach(applyGateState);
+    refreshAllGates();
 
     // Shopify's Order status page redirects back here as either:
     //   ?order=<shopify order id>   — real verification via the Worker (preferred)
