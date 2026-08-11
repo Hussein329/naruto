@@ -1,0 +1,15 @@
+name = "habitwell-unlock"
+main = "src/worker.js"
+compatibility_date = "2024-09-01"
+
+# After creating the KV namespace (see README), paste its id here:
+# wrangler kv namespace create UNLOCKS
+[[kv_namespaces]]
+binding = "UNLOCKS"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+# Set with: wrangler secret put SHOPIFY_WEBHOOK_SECRET
+# (value comes from Shopify admin when you create the webhook — never commit it)
+
+# Set with: wrangler secret put ALLOWED_ORIGIN
+# (the public URL of your HabitWell site, e.g. https://yourname.github.io)

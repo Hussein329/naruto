@@ -903,6 +903,8 @@
         <p class="section-sub">Not a mockup. Pick a tier, check off a habit, and your progress saves automatically in this browser.</p>
       </div>
 
+      <p class="hint" id="verify-banner" role="status" style="display:none;margin-bottom:20px;padding:12px 16px;border:1px solid var(--line);background:var(--paper-alt);text-align:left;"></p>
+
       <div class="app-tabs" role="tablist" aria-label="Choose a tracker tier">
         <button type="button" class="app-tab active" id="app-tab-basic" data-app="basic" role="tab" aria-selected="true" aria-controls="app-panel-basic">Basic · $10</button>
         <button type="button" class="app-tab" id="app-tab-premium" data-app="premium" role="tab" aria-selected="false" aria-controls="app-panel-premium">Premium · $25</button>
@@ -1477,14 +1479,18 @@
       if (btn) btn.href = shopifyCheckoutUrl(tier);
     });
 
+    // Deployed Worker URL from worker/ (see worker/README.md). Empty string
+    // means "not deployed yet" — the site still works, but falls back to an
+    // unverified redirect instead of real payment verification.
+    const HABITWELL_API = "";
+    function setVerifyBanner(text) {
+      const el = document.getElementById("verify-banner");
+      if (!el) return;
+      if (text) { el.textContent = text; el.style.display = "block"; }
+      else { el.style.display = "none"; }
+    }
+
     // ---------- Purchase gate (per tier, remembered on this device) ----------
-    // Unlocking only happens two ways: (1) Shopify redirects back here after a
-    // real payment with ?unlocked=<tier> (see the Order status page script the
-    // owner adds in Shopify admin), or (2) it was already unlocked earlier on
-    // this device. There is no client-side "unlock without paying" control —
-    // with a static site and no backend this can still be bypassed by a
-    // determined user editing the URL by hand; true server-side enforcement
-    // would need a small backend verifying Shopify's order webhook.
     function isUnlocked(tier) { return localStorage.getItem("habitslab_purchased_" + tier) === "true"; }
     function applyGateState(tier) {
       const prefix = TIER_KEYS_LOOKUP[tier];
@@ -1504,16 +1510,52 @@
     }
     Object.keys(TIER_KEYS_LOOKUP).forEach(applyGateState);
 
-    // Shopify's Order status page redirects back here as
-    // https://your-site/?unlocked=basic#app — read it once, unlock, clean the URL.
+    // Shopify's Order status page redirects back here as either:
+    //   ?order=<shopify order id>   — real verification via the Worker (preferred)
+    //   ?unlocked=<tier>            — unverified fallback if the Worker isn't set up yet
     (function handlePostPurchaseRedirect() {
       const params = new URLSearchParams(window.location.search);
-      const justPaid = params.get("unlocked");
-      if (justPaid && TIER_KEYS_LOOKUP[justPaid]) {
-        unlockTier(justPaid);
+      const orderId = params.get("order");
+      const legacyTier = params.get("unlocked");
+
+      function cleanUrl() {
+        params.delete("order");
         params.delete("unlocked");
         const query = params.toString();
         history.replaceState({}, "", window.location.pathname + (query ? "?" + query : "") + "#app");
+      }
+
+      if (orderId) {
+        if (!HABITWELL_API) {
+          console.warn("HabitWell: got a paid order redirect but HABITWELL_API isn't configured, so payment can't be verified. See worker/README.md.");
+          setVerifyBanner("We couldn't verify your payment automatically. Contact support with your order number: " + orderId);
+          cleanUrl();
+          return;
+        }
+        setVerifyBanner("Verifying your payment…");
+        fetch(HABITWELL_API + "/api/check-unlock?order=" + encodeURIComponent(orderId))
+          .then((r) => r.json())
+          .then((data) => {
+            if (data.unlocked && TIER_KEYS_LOOKUP[data.tier]) {
+              unlockTier(data.tier);
+              switchApp(data.tier);
+              setVerifyBanner("Payment verified — " + data.tier + " unlocked!");
+              setTimeout(() => setVerifyBanner(null), 4000);
+            } else {
+              setVerifyBanner("We couldn't verify a paid order (#" + orderId + ") yet. If you just paid, try refreshing in a few seconds, or contact support.");
+            }
+          })
+          .catch(() => {
+            setVerifyBanner("Couldn't reach the verification service. If you just paid, contact support with order #" + orderId + ".");
+          });
+        cleanUrl();
+        return;
+      }
+
+      if (legacyTier && TIER_KEYS_LOOKUP[legacyTier]) {
+        console.warn("HabitWell: unlocked via unverified redirect (no order id). Set up worker/ for real payment verification.");
+        unlockTier(legacyTier);
+        cleanUrl();
       }
     })();
 
