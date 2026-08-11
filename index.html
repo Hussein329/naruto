@@ -650,6 +650,18 @@
   .app-panel { display: none; }
   .app-panel.active { display: block; }
 
+  .tier-gate { text-align: center; padding: 64px 24px; border: 1px dashed var(--line); background: var(--paper-alt); }
+  .tier-gate.hidden { display: none; }
+  .tier-gate-icon { font-size: 2.4rem; margin-bottom: 14px; }
+  .tier-gate h3 { font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; font-size: 1rem; margin: 0 0 10px; color: var(--ink); }
+  .tier-gate p { color: var(--ink-soft); max-width: 46ch; margin: 0 auto 20px; }
+  .tier-gate .app-btn { margin-bottom: 14px; }
+  .tier-gate .hint { padding-top: 0; }
+  .tier-content { display: none; }
+  .tier-content.unlocked { display: block; }
+  #app-panel-deluxe .tier-gate { border-color: var(--gold); }
+  #app-panel-premium .tier-gate { border-color: var(--accent); }
+
   /* Shared panel components (used by all three trackers) */
   .panel { background: var(--paper-raised); border: 1px solid var(--line); box-shadow: var(--shadow); margin-bottom: 24px; }
   .panel.gilded { border-top: 3px solid var(--gold); box-shadow: var(--shadow), var(--glow-strong); }
@@ -898,6 +910,14 @@
       </div>
 
       <div class="app-panel active" id="app-panel-basic" role="tabpanel" aria-labelledby="app-tab-basic">
+        <div class="tier-gate" id="bas-gate">
+          <div class="tier-gate-icon" aria-hidden="true">🔒</div>
+          <h3>Unlock the Basic tracker</h3>
+          <p>This version is for buyers. Unlock it on this device to start checking off habits &mdash; your unlock is remembered here.</p>
+          <button type="button" class="app-btn" data-unlock="basic">Unlock Basic &middot; $10</button>
+          <p class="hint">Portfolio demo &mdash; this doesn't charge a real card.</p>
+        </div>
+        <div class="tier-content" id="bas-content">
         <div class="panel">
           <div class="panel-head"><h3>This week</h3><span class="mono" style="font-size:.68rem;color:var(--ink-faint)">Autosaved locally</span></div>
           <div style="overflow-x:auto;">
@@ -927,9 +947,18 @@
           <div class="summary-grid" id="bas-summary" aria-live="polite"></div>
         </div>
         <p class="hint">Manual streak counter, weekly % rollup &mdash; today's column is highlighted for you.</p>
+        </div>
       </div>
 
       <div class="app-panel" id="app-panel-premium" role="tabpanel" aria-labelledby="app-tab-premium" hidden>
+        <div class="tier-gate" id="prem-gate">
+          <div class="tier-gate-icon" aria-hidden="true">🔒</div>
+          <h3>Unlock the Premium dashboard</h3>
+          <p>This version is for buyers. Unlock it on this device to see your trend, category breakdown, and correlation stats &mdash; your unlock is remembered here.</p>
+          <button type="button" class="app-btn" data-unlock="premium">Unlock Premium &middot; $25</button>
+          <p class="hint">Portfolio demo &mdash; this doesn't charge a real card.</p>
+        </div>
+        <div class="tier-content" id="prem-content">
         <div class="app-tabs" role="tablist" aria-label="Premium dashboard sections" style="margin-bottom:20px;">
           <button type="button" class="tab-btn active" data-tab="dashboard" role="tab" aria-selected="true">Dashboard</button>
           <button type="button" class="tab-btn" data-tab="log" role="tab" aria-selected="false">Daily Log</button>
@@ -1005,9 +1034,18 @@
             </div>
           </div>
         </div>
+        </div>
       </div>
 
       <div class="app-panel" id="app-panel-deluxe" role="tabpanel" aria-labelledby="app-tab-deluxe" hidden>
+        <div class="tier-gate" id="dlx-gate">
+          <div class="tier-gate-icon" aria-hidden="true">🔒</div>
+          <h3>Unlock the Deluxe RPG</h3>
+          <p>This version is for buyers. Unlock it on this device to start earning XP, leveling up, and fighting the boss &mdash; your unlock is remembered here.</p>
+          <button type="button" class="app-btn" data-unlock="deluxe">Unlock Deluxe &middot; $50</button>
+          <p class="hint">Portfolio demo &mdash; this doesn't charge a real card.</p>
+        </div>
+        <div class="tier-content" id="dlx-content">
         <div class="panel gilded">
           <div class="panel-head"><h3>Character sheet</h3></div>
           <div class="panel-body">
@@ -1095,6 +1133,7 @@
         </div>
 
         <p class="hint">XP, levels and badges persist in this browser. Level = floor(Total XP / 100).</p>
+        </div>
       </div>
     </div>
   </section>
@@ -1422,6 +1461,30 @@
       };
       requestAnimationFrame(step);
     });
+
+    // ---------- Purchase gate (per tier, remembered on this device) ----------
+    const TIER_KEYS = { basic: "bas", premium: "prem", deluxe: "dlx" };
+    function isUnlocked(tier) { return localStorage.getItem("habitslab_purchased_" + tier) === "true"; }
+    function applyGateState(tier) {
+      const prefix = TIER_KEYS[tier];
+      const gate = document.getElementById(prefix + "-gate");
+      const content = document.getElementById(prefix + "-content");
+      const unlocked = isUnlocked(tier);
+      if (gate) gate.classList.toggle("hidden", unlocked);
+      if (content) content.classList.toggle("unlocked", unlocked);
+      const cardBtn = document.querySelector('.tier-demo-btn[data-launch="' + tier + '"]');
+      if (cardBtn) cardBtn.textContent = unlocked ? "Open it ↓" : "Use it now ↓";
+    }
+    function unlockTier(tier) {
+      localStorage.setItem("habitslab_purchased_" + tier, "true");
+      applyGateState(tier);
+      const content = document.getElementById(TIER_KEYS[tier] + "-content");
+      if (content) content.querySelector("button, input, select, a")?.focus();
+    }
+    document.querySelectorAll("[data-unlock]").forEach((btn) => {
+      btn.addEventListener("click", () => unlockTier(btn.dataset.unlock));
+    });
+    Object.keys(TIER_KEYS).forEach(applyGateState);
 
     // ---------- App tier switcher ----------
     const appTabs = document.querySelectorAll(".app-tab");
