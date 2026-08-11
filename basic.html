@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basic Tracker — Live Demo | The Habits Lab</title>
+<meta name="description" content="Try the Basic habit tracker: a minimal 7-day checkbox grid with streaks and a weekly summary.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><rect width=%2224%22 height=%2224%22 rx=%224%22 fill=%22%23070707%22/><path fill=%22%23ff2e42%22 d=%22M9 3a1 1 0 1 0 0 2h1v5.28L4.9 19.2A2 2 0 0 0 6.6 22.3h10.8a2 2 0 0 0 1.7-3.1L14 10.28V5h1a1 1 0 1 0 0-2H9z%22/></svg>">
+<style>
+  :root {
+    --paper: #070707; --paper-raised: #121213; --paper-alt: #0c0c0d;
+    --ink: #f4f1ee; --ink-soft: #b0aca7; --ink-faint: #6f6b67;
+    --line: #2a2a2b; --line-soft: #1c1c1d;
+    --accent: #ff2e42; --accent-strong: #ff5164; --accent-ink: #0a0a0a; --accent-tint: #3c0d13;
+    --glow: 0 0 1px rgba(255, 46, 66, 0.4), 0 0 32px rgba(255, 46, 66, 0.35);
+    --shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.8);
+    --maxw: 880px;
+    --mono: ui-monospace, "SF Mono", "IBM Plex Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "PT Serif", serif;
+  }
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; } }
+  body {
+    margin: 0;
+    background: repeating-linear-gradient(0deg, rgba(255,46,66,.075) 0 1px, transparent 1px 32px),
+                repeating-linear-gradient(90deg, rgba(255,46,66,.075) 0 1px, transparent 1px 32px),
+                var(--paper);
+    color: var(--ink); font-family: var(--serif); line-height: 1.55; font-size: 17px;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px 80px; }
+  a { color: inherit; }
+  .mono { font-family: var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  .topbar-inner { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+  .back-link { text-decoration: none; font-family: var(--mono); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 6px; transition: color .15s ease; }
+  .back-link:hover { color: var(--accent-strong); }
+  .tier-badge { font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--paper-raised); background: var(--ink); padding: 6px 12px; }
+
+  h1 { font-family: var(--mono); font-weight: 700; font-size: clamp(1.5rem, 3.4vw, 2.1rem); margin: 44px 0 8px; letter-spacing: -.01em; }
+  .lede { color: var(--ink-soft); max-width: 60ch; margin: 0 0 36px; }
+
+  .panel { background: var(--paper-raised); border: 1px solid var(--line); box-shadow: var(--shadow); margin-bottom: 28px; }
+  .panel-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .panel-head h2 { font-family: var(--mono); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; margin: 0; color: var(--ink-soft); }
+
+  table { width: 100%; border-collapse: collapse; }
+  thead th { font-family: var(--mono); font-size: .62rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); text-align: center; padding: 10px 6px; border-bottom: 1px solid var(--line); background: var(--paper-alt); }
+  thead th:first-child, thead th:last-child { text-align: left; }
+  tbody td { padding: 10px 6px; border-bottom: 1px solid var(--line-soft); text-align: center; }
+  tbody tr:last-child td { border-bottom: none; }
+  .habit-cell { text-align: left !important; }
+  .habit-name { font-weight: 700; }
+  .habit-cat { display: block; font-family: var(--mono); font-size: .64rem; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-faint); margin-top: 2px; }
+
+  .chk { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; border: 1px solid var(--line); justify-self: center; display: inline-block; padding: 0; margin: 0; background: transparent; cursor: pointer; transition: background-color .12s ease, border-color .12s ease, transform .08s ease; }
+  .chk:hover { border-color: var(--accent); transform: scale(1.15); }
+  .chk:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .chk.on { background: var(--accent); border-color: var(--accent-strong); }
+
+  .streak-val { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 700; color: var(--accent-strong); transition: color .15s ease; }
+  .streak-val.bump { color: var(--ink); text-shadow: 0 0 12px rgba(255,46,66,.9); }
+
+  .del-btn { background: none; border: none; color: var(--ink-faint); cursor: pointer; font-family: var(--mono); font-size: .9rem; padding: 4px 6px; line-height: 1; }
+  .del-btn:hover { color: var(--accent-strong); }
+
+  .add-row { padding: 16px 20px; display: flex; gap: 10px; flex-wrap: wrap; border-top: 1px solid var(--line); background: var(--paper-alt); }
+  input[type="text"], select {
+    font-family: var(--serif); font-size: .92rem; background: var(--paper); color: var(--ink);
+    border: 1px solid var(--line); padding: 9px 12px;
+  }
+  input[type="text"] { flex: 1; min-width: 160px; }
+  input[type="text"]:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .btn { font-family: var(--mono); text-decoration: none; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; padding: 10px 18px; border: 1px solid var(--ink); background: var(--ink); color: var(--paper-raised); cursor: pointer; transition: transform .12s ease, background .12s ease, box-shadow .12s ease; }
+  .btn:hover { background: var(--accent-strong); border-color: var(--accent-strong); color: var(--accent-ink); box-shadow: var(--glow); transform: translateY(-1px); }
+
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1px; background: var(--line); }
+  .summary-cell { background: var(--paper-raised); padding: 18px 20px; }
+  .summary-k { display: block; font-family: var(--mono); font-size: .64rem; letter-spacing: .08em; color: var(--ink-faint); text-transform: uppercase; margin-bottom: 6px; }
+  .summary-v { font-family: var(--mono); font-size: 1.6rem; font-weight: 700; color: var(--accent-strong); }
+  .bar-track { height: 6px; background: var(--paper-alt); border: 1px solid var(--line); margin-top: 8px; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent-strong), var(--accent)); transition: width .3s ease; }
+
+  .hint { font-family: var(--mono); font-size: .68rem; letter-spacing: .04em; color: var(--ink-faint); text-align: center; padding: 10px 0 0; }
+  @media (max-width: 640px) { table { font-size: .82rem; } .habit-cat { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="back-link" href="index.html">&larr; The Habits Lab</a>
+    <span class="tier-badge mono">Tier 1 &middot; Basic &middot; $10</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <h1>Minimal Notion Tracker</h1>
+  <p class="lede">The Basic tier, live. Check off a habit each day, watch the streak move, and see your weekly completion update in real time. Your data is saved in this browser.</p>
+
+  <div class="panel">
+    <div class="panel-head"><h2>This week</h2><span class="mono" style="font-size:.68rem;color:var(--ink-faint)">Autosaved locally</span></div>
+    <div style="overflow-x:auto;">
+      <table id="habit-table">
+        <thead>
+          <tr>
+            <th class="habit-cell">Habit</th>
+            <th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th><th>S</th>
+            <th>Streak</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="habit-body"></tbody>
+      </table>
+    </div>
+    <form class="add-row" id="add-form">
+      <input type="text" id="new-habit-name" placeholder="Add a habit&hellip;" required maxlength="40">
+      <select id="new-habit-cat">
+        <option>General</option>
+        <option>Health</option>
+        <option>Mind</option>
+        <option>Work</option>
+        <option>Learning</option>
+      </select>
+      <button type="submit" class="btn">Add habit</button>
+    </form>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><h2>Weekly summary</h2></div>
+    <div class="summary-grid" id="summary-grid"></div>
+  </div>
+
+  <p class="hint">Basic ships with a manual streak counter and a weekly % rollup &mdash; no formulas to break.</p>
+</div>
+
+<script>
+(function () {
+  const STORAGE_KEY = "habitslab_basic_v1";
+  const DAY_LABELS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+  const defaultHabits = [
+    { id: 1, name: "Morning run", cat: "Health", checks: [true,true,true,false,true,true,false], streak: 12 },
+    { id: 2, name: "Read 20 pages", cat: "Learning", checks: [true,true,true,true,true,false,false], streak: 8 },
+    { id: 3, name: "Meditate", cat: "Mind", checks: [true,true,true,true,true,true,true], streak: 21 },
+  ];
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return { habits: defaultHabits, nextId: 4 };
+  }
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  let state = load();
+
+  const body = document.getElementById("habit-body");
+  const summaryGrid = document.getElementById("summary-grid");
+
+  function render() {
+    body.innerHTML = "";
+    state.habits.forEach((h) => {
+      const tr = document.createElement("tr");
+
+      const nameTd = document.createElement("td");
+      nameTd.className = "habit-cell";
+      nameTd.innerHTML = '<span class="habit-name"></span><span class="habit-cat"></span>';
+      nameTd.querySelector(".habit-name").textContent = h.name;
+      nameTd.querySelector(".habit-cat").textContent = h.cat;
+      tr.appendChild(nameTd);
+
+      h.checks.forEach((on, i) => {
+        const td = document.createElement("td");
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "chk" + (on ? " on" : "");
+        btn.setAttribute("aria-pressed", String(on));
+        btn.setAttribute("aria-label", DAY_LABELS[i] + ", " + h.name);
+        btn.addEventListener("click", () => {
+          const turningOn = !h.checks[i];
+          h.checks[i] = turningOn;
+          h.streak = Math.max(0, h.streak + (turningOn ? 1 : -1));
+          save();
+          render();
+        });
+        td.appendChild(btn);
+        tr.appendChild(td);
+      });
+
+      const streakTd = document.createElement("td");
+      streakTd.innerHTML = '<span class="streak-val">' + h.streak + "</span>";
+      tr.appendChild(streakTd);
+
+      const delTd = document.createElement("td");
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "del-btn";
+      delBtn.setAttribute("aria-label", "Remove " + h.name);
+      delBtn.textContent = "✕";
+      delBtn.addEventListener("click", () => {
+        state.habits = state.habits.filter((x) => x.id !== h.id);
+        save();
+        render();
+      });
+      delTd.appendChild(delBtn);
+      tr.appendChild(delTd);
+
+      body.appendChild(tr);
+    });
+
+    summaryGrid.innerHTML = "";
+    const totalBoxes = state.habits.length * 7;
+    const totalChecked = state.habits.reduce((sum, h) => sum + h.checks.filter(Boolean).length, 0);
+    const overallPct = totalBoxes ? Math.round((totalChecked / totalBoxes) * 100) : 0;
+
+    const overallCell = document.createElement("div");
+    overallCell.className = "summary-cell";
+    overallCell.innerHTML =
+      '<span class="summary-k">Overall complete</span><span class="summary-v">' + overallPct + '%</span>' +
+      '<div class="bar-track"><div class="bar-fill" style="width:' + overallPct + '%"></div></div>';
+    summaryGrid.appendChild(overallCell);
+
+    state.habits.forEach((h) => {
+      const pct = Math.round((h.checks.filter(Boolean).length / 7) * 100);
+      const cell = document.createElement("div");
+      cell.className = "summary-cell";
+      cell.innerHTML =
+        '<span class="summary-k"></span><span class="summary-v" style="font-size:1.1rem;color:var(--ink)"></span>' +
+        '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%"></div></div>';
+      cell.querySelector(".summary-k").textContent = h.name;
+      cell.querySelector(".summary-v").textContent = pct + "%";
+      summaryGrid.appendChild(cell);
+    });
+  }
+
+  document.getElementById("add-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const nameInput = document.getElementById("new-habit-name");
+    const catSelect = document.getElementById("new-habit-cat");
+    const name = nameInput.value.trim();
+    if (!name) return;
+    state.habits.push({ id: state.nextId++, name, cat: catSelect.value, checks: [false,false,false,false,false,false,false], streak: 0 });
+    nameInput.value = "";
+    save();
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
