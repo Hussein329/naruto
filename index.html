@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HabitWell — Habit Tracker: Basic, Premium &amp; Deluxe</title>
-<meta name="description" content="HabitWell habit tracker, in three tiers: a $10 no-frills checklist, a $25 analytics dashboard, and a $50 gamified Deluxe system. Try it free, unlock with a real purchase.">
+<meta name="description" content="HabitWell habit tracker, in three tiers: a $10 no-frills checklist, a $25 analytics dashboard, and a free gamified Deluxe system. Try it free, unlock with a real purchase.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><rect width=%2224%22 height=%2224%22 rx=%224%22 fill=%22%23070707%22/><path fill=%22%23ff2e42%22 d=%22M9 3a1 1 0 1 0 0 2h1v5.28L4.9 19.2A2 2 0 0 0 6.6 22.3h10.8a2 2 0 0 0 1.7-3.1L14 10.28V5h1a1 1 0 1 0 0-2H9z%22/></svg>">
 <style>
 
@@ -860,7 +860,7 @@
           <h1>One habit tracker.<br>Basic, Premium, <em>or Deluxe.</em></h1>
           <p class="hero-sub">
             Check a box, keep a streak — that's the whole job. Use it free, right now, in three
-            flavors: a $10 no-frills tracker, a $25 analytics dashboard, or a $50 gamified quest
+            flavors: a $10 no-frills tracker, a $25 analytics dashboard, or a free gamified quest
             system with XP and levels.
           </p>
           <div class="hero-actions">
@@ -916,7 +916,7 @@
       <div class="spec-sheet">
         <div class="spec-cell"><span class="spec-k">Tiers</span><span class="spec-v">03</span></div>
         <div class="spec-cell"><span class="spec-k">Build window</span><span class="spec-v" data-count-to="21" data-suffix=" days">21 days</span></div>
-        <div class="spec-cell"><span class="spec-k">Price range</span><span class="spec-v">$10–$50</span></div>
+        <div class="spec-cell"><span class="spec-k">Price range</span><span class="spec-v">$10–$25</span></div>
         <div class="spec-cell"><span class="spec-k">Tooling</span><span class="spec-v">Notion + Sheets</span></div>
       </div>
     </div>
@@ -935,7 +935,7 @@
       <div class="app-tabs" role="tablist" aria-label="Choose a tracker tier">
         <button type="button" class="app-tab active" id="app-tab-basic" data-app="basic" role="tab" aria-selected="true" aria-controls="app-panel-basic">Basic · $10</button>
         <button type="button" class="app-tab" id="app-tab-premium" data-app="premium" role="tab" aria-selected="false" aria-controls="app-panel-premium">Premium · $25</button>
-        <button type="button" class="app-tab" id="app-tab-deluxe" data-app="deluxe" role="tab" aria-selected="false" aria-controls="app-panel-deluxe">Deluxe · $50</button>
+        <button type="button" class="app-tab" id="app-tab-deluxe" data-app="deluxe" role="tab" aria-selected="false" aria-controls="app-panel-deluxe">Deluxe · Free</button>
       </div>
 
       <div class="app-panel active" id="app-panel-basic" role="tabpanel" aria-labelledby="app-tab-basic">
@@ -1237,7 +1237,7 @@
             </div>
             <h3 class="tier-name">Gamified RPG Ecosystem</h3>
             <div class="tier-tool">Notion + PDF/Video</div>
-            <div class="tier-price">$50</div>
+            <div class="tier-price">Free</div>
             <span class="plan-badge" id="dlx-plan-badge" hidden></span>
             <p class="tier-desc">Habits reskinned as a game: quests, XP, levels, a boss-goal map. Notion and good formulas — no custom software.</p>
             <ul class="tier-features">
@@ -1273,7 +1273,7 @@
             <tr><th>&nbsp;</th><th data-col="1">Basic</th><th data-col="2">Premium</th><th data-col="3">Deluxe</th></tr>
           </thead>
           <tbody>
-            <tr><td>Price</td><td class="num" data-col="1">$10</td><td class="num" data-col="2">$25</td><td class="num" data-col="3">$50</td></tr>
+            <tr><td>Price</td><td class="num" data-col="1">$10</td><td class="num" data-col="2">$25</td><td class="num" data-col="3">Free</td></tr>
             <tr><td>Tool</td><td data-col="1">Notion</td><td data-col="2">Google Sheets</td><td data-col="3">Notion + PDF/Video</td></tr>
             <tr><td>Build time</td><td class="num" data-col="1">3–5 hrs</td><td class="num" data-col="2">8–14 hrs</td><td class="num" data-col="3">20–35 hrs</td></tr>
             <tr><td>Ships</td><td data-col="1">Day 3</td><td data-col="2">Day 10</td><td data-col="3">Day 21</td></tr>
@@ -1528,10 +1528,14 @@
     // tier still requires its own separate Shopify purchase to open.
     const TIER_LABELS = { basic: "Basic", premium: "Premium", deluxe: "Deluxe" };
     const TIER_GATE_NOUN = { basic: "the Basic tracker", premium: "the Premium dashboard", deluxe: "the Deluxe RPG" };
-    const TIER_PRICE = { basic: 10, premium: 25, deluxe: 50 };
+    const TIER_PRICE = { basic: 10, premium: 25, deluxe: 0 };
     const TIER_RANK = { basic: 1, premium: 2, deluxe: 3 };
-    function isUnlocked(tier) { return localStorage.getItem("habitslab_purchased_" + tier) === "true"; }
-    function ownedTiers() { return ["basic", "premium", "deluxe"].filter(isUnlocked); }
+    const FREE_TIERS = ["deluxe"]; // Deluxe is free and open to everyone — no purchase needed.
+    function isPaidOwned(tier) { return localStorage.getItem("habitslab_purchased_" + tier) === "true"; }
+    function isUnlocked(tier) { return FREE_TIERS.includes(tier) || isPaidOwned(tier); }
+    // Only paid tiers count toward "current plan" / upgrade ranking — Deluxe
+    // being free for everyone shouldn't make it look like everyone's top tier.
+    function ownedTiers() { return ["basic", "premium"].filter(isPaidOwned); }
     function highestOwnedTier() {
       const owned = ownedTiers();
       if (!owned.length) return null;
@@ -1588,7 +1592,8 @@
         cardBtn.textContent = unlocked ? "Open it ↓" : isUpgrade ? "Upgrade ↓" : "Buy & use ↓";
       }
       if (badge) {
-        if (unlocked) { badge.textContent = "✓ Active Plan"; badge.className = "plan-badge active"; badge.hidden = false; }
+        if (FREE_TIERS.includes(tier)) { badge.textContent = "★ Free"; badge.className = "plan-badge active"; badge.hidden = false; }
+        else if (unlocked) { badge.textContent = "✓ Active Plan"; badge.className = "plan-badge active"; badge.hidden = false; }
         else if (isUpgrade) { badge.textContent = "⬆ Upgrade available"; badge.className = "plan-badge upgrade"; badge.hidden = false; }
         else { badge.hidden = true; }
       }
