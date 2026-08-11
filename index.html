@@ -454,6 +454,7 @@
 
   .tier-demo-btn {
     display: block;
+    width: 100%;
     text-align: center;
     text-decoration: none;
     font-family: var(--mono);
@@ -465,8 +466,10 @@
     border: 1px solid var(--ink);
     padding: 11px 16px;
     margin-bottom: 16px;
+    cursor: pointer;
     transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
   }
+  .tier-demo-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .tier-demo-btn:hover { background: var(--accent-strong); border-color: var(--accent-strong); color: var(--accent-ink); box-shadow: var(--glow); transform: translateY(-1px); }
   .tier-card.tier-basic .tier-demo-btn { border-color: var(--ink-faint); }
   .tier-card.tier-premium .tier-demo-btn { border-color: var(--accent); color: var(--accent-strong); }
@@ -632,10 +635,163 @@
   }
   .preview-row.flash { animation: row-flash 0.9s ease; }
 
+  /* ---------- Accessibility utilities ---------- */
+  .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  .skip-link { position: absolute; left: -9999px; top: 0; background: var(--ink); color: var(--paper-raised); font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 12px 18px; z-index: 1000; text-decoration: none; }
+  .skip-link:focus { left: 12px; top: 12px; }
+
+  /* ---------- App switcher (live product) ---------- */
+  .app-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px; }
+  .app-tab { font-family: var(--mono); cursor: pointer; background: transparent; border: 1px solid var(--line); color: var(--ink-soft); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 12px 20px; transition: all 0.15s ease; }
+  .app-tab:hover { border-color: var(--accent); color: var(--accent-strong); }
+  .app-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .app-tab.active { background: var(--ink); border-color: var(--ink); color: var(--paper-raised); }
+  .app-tab[data-app="deluxe"].active { background: var(--gold-strong); border-color: var(--gold-strong); color: var(--accent-ink); }
+  .app-panel { display: none; }
+  .app-panel.active { display: block; }
+
+  /* Shared panel components (used by all three trackers) */
+  .panel { background: var(--paper-raised); border: 1px solid var(--line); box-shadow: var(--shadow); margin-bottom: 24px; }
+  .panel.gilded { border-top: 3px solid var(--gold); box-shadow: var(--shadow), var(--glow-strong); }
+  .panel-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .panel-head h3 { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; margin: 0; color: var(--ink-soft); }
+  .panel-body { padding: 20px; }
+
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 1px; background: var(--line); }
+  .stat-cell { background: var(--paper-raised); padding: 14px 16px; }
+  .stat-k { display: block; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase; margin-bottom: 4px; }
+  .stat-v { font-family: var(--mono); font-size: 1.35rem; font-weight: 700; color: var(--accent-strong); font-variant-numeric: tabular-nums; }
+
+  .bar-label-row { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px; }
+  .bar-track { height: 14px; background: var(--paper-alt); border: 1px solid var(--line); overflow: hidden; margin-bottom: 16px; }
+  .bar-fill { height: 100%; transition: width 0.4s ease; }
+
+  .app-panel table { width: 100%; border-collapse: collapse; }
+  .app-panel thead th { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); text-align: center; padding: 10px 6px; border-bottom: 1px solid var(--line); background: var(--paper-alt); }
+  .app-panel thead th:first-child, .app-panel thead th:last-child { text-align: left; }
+  .app-panel tbody td { padding: 10px 6px; border-bottom: 1px solid var(--line-soft); text-align: center; font-size: 0.9rem; }
+  .app-panel tbody tr:last-child td { border-bottom: none; }
+  .app-panel .today-col { background: var(--accent-tint); }
+  .habit-cell { text-align: left !important; }
+  .habit-name { font-weight: 700; }
+  .habit-cat { display: block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-faint); margin-top: 2px; }
+
+  .app-chk { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; border: 1px solid var(--line); display: inline-block; padding: 0; margin: 0; background: transparent; cursor: pointer; transition: background-color 0.12s ease, border-color 0.12s ease, transform 0.08s ease; }
+  .app-chk:hover { border-color: var(--accent); transform: scale(1.15); }
+  .app-chk:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .app-chk.on { background: var(--accent); border-color: var(--accent-strong); }
+
+  .streak-val { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 700; color: var(--accent-strong); transition: color 0.15s ease; }
+  .streak-val.bump { color: var(--ink); text-shadow: 0 0 12px rgba(255, 46, 66, 0.9); }
+  .bas-row.flash { animation: row-flash 0.9s ease; }
+
+  .app-del-btn { background: none; border: none; color: var(--ink-faint); cursor: pointer; font-family: var(--mono); font-size: 0.9rem; padding: 4px 6px; line-height: 1; }
+  .app-del-btn:hover, .app-del-btn:focus-visible { color: var(--accent-strong); }
+
+  .app-add-row { padding: 16px 20px; display: flex; gap: 10px; flex-wrap: wrap; border-top: 1px solid var(--line); background: var(--paper-alt); }
+  .app-panel input[type="text"], .app-panel select { font-family: var(--serif); font-size: 0.92rem; background: var(--paper); color: var(--ink); border: 1px solid var(--line); padding: 9px 12px; }
+  .app-panel input[type="text"] { flex: 1; min-width: 150px; }
+  .app-panel input[type="text"]:focus, .app-panel select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .app-btn { font-family: var(--mono); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 10px 18px; border: 1px solid var(--ink); background: var(--ink); color: var(--paper-raised); cursor: pointer; transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease; }
+  .app-btn:hover { background: var(--accent-strong); border-color: var(--accent-strong); color: var(--accent-ink); box-shadow: var(--glow); transform: translateY(-1px); }
+  .app-btn-ghost { background: transparent; color: var(--ink-soft); border: 1px solid var(--line); }
+  .app-btn-ghost:hover { border-color: var(--accent); color: var(--accent-strong); box-shadow: none; }
+
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--line); }
+  .summary-cell { background: var(--paper-raised); padding: 16px 18px; }
+
+  /* ---------- Premium (nested tabs, charts) ---------- */
+  .tab-btn { font-family: var(--mono); cursor: pointer; background: transparent; border: 1px solid var(--line); color: var(--ink-soft); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 9px 14px; transition: all 0.15s ease; }
+  .tab-btn:hover { border-color: var(--accent); color: var(--accent-strong); }
+  .tab-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .tab-btn.active { background: var(--ink); border-color: var(--ink); color: var(--paper-raised); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .grid-2 { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; }
+  @media (max-width: 800px) { .grid-2 { grid-template-columns: 1fr; } }
+  svg.chart { width: 100%; height: auto; display: block; }
+  .chart-line { fill: none; stroke: var(--accent-strong); stroke-width: 2.5; }
+  .chart-area { opacity: 0.5; }
+  .chart-axis { stroke: var(--line); stroke-width: 1; }
+  .chart-dot { fill: var(--accent-strong); }
+  .bar-rect { fill: var(--accent); transition: fill 0.15s ease; }
+  .bar-rect:hover { fill: var(--accent-strong); }
+  .bar-label { font-family: var(--mono); font-size: 9px; fill: var(--ink-faint); text-transform: uppercase; }
+  .bar-value { font-family: var(--mono); font-size: 10px; fill: var(--ink); font-weight: 700; }
+  .spark-cell { width: 90px; }
+  .slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .slider-row label { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-soft); width: 90px; flex-shrink: 0; }
+  input[type="range"] { flex: 1; accent-color: var(--accent-strong); }
+  input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .slider-val { font-family: var(--mono); font-weight: 700; color: var(--accent-strong); width: 24px; text-align: right; }
+  .log-habit-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line-soft); }
+  .log-habit-row:last-child { border-bottom: none; }
+  .settings-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line-soft); }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-row span { flex: 1; }
+  .lock-note { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-faint); background: var(--paper-alt); border: 1px solid var(--line); padding: 12px 16px; margin-bottom: 20px; }
+  tbody tr.top-row td:first-child { color: var(--accent-strong); font-weight: 700; }
+  tbody tr.bottom-row td:first-child { color: var(--ink-faint); }
+
+  /* ---------- Deluxe (RPG game) ---------- */
+  .sheet-top { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-bottom: 22px; }
+  .avatar { width: 60px; height: 60px; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; background: var(--gold-tint); flex-shrink: 0; box-shadow: var(--glow-strong); }
+  .avatar svg { width: 30px; height: 30px; fill: var(--gold-strong); }
+  .sheet-name { font-family: var(--mono); font-weight: 700; font-size: 1.25rem; letter-spacing: 0.02em; }
+  .sheet-level { font-family: var(--mono); font-size: 0.78rem; color: var(--gold-strong); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .class-chip { background: var(--gold-tint); border: 1px solid var(--gold); padding: 2px 8px; color: var(--ink); }
+  .bar-fill.xp { background: linear-gradient(90deg, var(--gold-strong), var(--gold)); box-shadow: 0 0 12px rgba(255,20,50,0.6); }
+  .bar-fill.health { background: linear-gradient(90deg, var(--accent-strong), var(--accent)); }
+  .bar-fill.boss { background: linear-gradient(90deg, var(--gold), var(--accent-strong)); }
+
+  .quest-row { display: flex; align-items: center; gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--line-soft); }
+  .quest-row:last-child { border-bottom: none; }
+  .quest-chk { appearance: none; -webkit-appearance: none; width: 22px; height: 22px; border: 2px solid var(--line); flex-shrink: 0; cursor: pointer; transition: all 0.12s ease; position: relative; }
+  .quest-chk:hover { border-color: var(--gold); transform: scale(1.1); }
+  .quest-chk:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .quest-chk.on { background: var(--gold-strong); border-color: var(--gold); box-shadow: var(--glow-strong); }
+  .quest-chk.on::after { content: "\2713"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--accent-ink); font-size: 14px; font-weight: 700; }
+  .quest-name { flex: 1; font-size: 0.96rem; }
+  .quest-name.done { color: var(--ink-faint); text-decoration: line-through; }
+  .quest-xp { font-family: var(--mono); font-size: 0.76rem; color: var(--gold-strong); font-weight: 700; white-space: nowrap; }
+  .quest-cat { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-faint); }
+
+  .xp-float { position: fixed; pointer-events: none; font-family: var(--mono); font-weight: 700; color: var(--gold-strong); text-shadow: 0 0 10px rgba(255,20,50,0.8); z-index: 999; animation: floatUp 1s ease forwards; }
+  @keyframes floatUp { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-36px); } }
+
+  .levelup-toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-20px); opacity: 0; background: var(--paper-raised); border: 1px solid var(--gold); box-shadow: var(--glow-strong); padding: 14px 26px; font-family: var(--mono); font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold-strong); z-index: 1000; transition: opacity 0.3s ease, transform 0.3s ease; }
+  .levelup-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .goal-map { display: flex; flex-direction: column; gap: 14px; }
+  .goal-tier { border: 1px solid var(--line); background: var(--paper-alt); padding: 14px 18px; }
+  .goal-tier.reached { border-color: var(--gold); background: var(--gold-tint); }
+  .goal-tier-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .goal-tier-name { font-family: var(--mono); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em; }
+  .goal-tier.reached .goal-tier-name { color: var(--gold-strong); }
+  .goal-tier-xp { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-faint); }
+  .goal-arrow { text-align: center; color: var(--ink-faint); font-family: var(--mono); font-size: 0.8rem; }
+
+  .badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 14px; }
+  .badge { border: 1px solid var(--line); background: var(--paper-alt); padding: 16px 10px; text-align: center; transition: all 0.2s ease; }
+  .badge.unlocked { border-color: var(--gold); background: var(--gold-tint); box-shadow: var(--glow-strong); }
+  .badge-icon { font-size: 1.6rem; margin-bottom: 8px; filter: grayscale(1) opacity(0.4); }
+  .badge.unlocked .badge-icon { filter: none; }
+  .badge-name { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-faint); }
+  .badge.unlocked .badge-name { color: var(--ink); }
+  .badge-req { font-family: var(--mono); font-size: 0.58rem; color: var(--ink-faint); margin-top: 3px; }
+
+  .adv-log { list-style: none; margin: 0; padding: 0; max-height: 220px; overflow-y: auto; }
+  .adv-log li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); font-size: 0.86rem; }
+  .adv-log li:last-child { border-bottom: none; }
+  .adv-log time { font-family: var(--mono); font-size: 0.66rem; color: var(--ink-faint); white-space: nowrap; }
+
+  .hint { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.04em; color: var(--ink-faint); text-align: center; padding: 10px 0 0; }
+
 </style>
 </head>
 <body>
 
+<a class="skip-link" href="#app">Skip to the tracker</a>
 <div class="scroll-bar" id="scrollBar"></div>
 
 <header class="site-header">
@@ -645,12 +801,13 @@
       <span class="brand-text">THE HABITS LAB</span>
     </a>
     <nav class="main-nav" aria-label="Primary">
-      <a href="#tiers">Tiers</a>
+      <a href="#app">Use It</a>
+      <a href="#tiers">Pricing</a>
       <a href="#compare">Compare</a>
       <a href="#log">Build Log</a>
       <a href="#protocol">Protocol</a>
     </nav>
-    <a class="nav-cta" href="#tiers">See Pricing</a>
+    <a class="nav-cta" href="#app">Launch App</a>
   </div>
 </header>
 
@@ -663,13 +820,13 @@
           <span class="hero-tag">Habit Tracker Product Suite</span>
           <h1>One habit tracker.<br>Basic, Premium, <em>or Deluxe.</em></h1>
           <p class="hero-sub">
-            Check a box, keep a streak — that's the whole job. We sell that job three ways:
-            a $10 Notion tracker, a $25 analytics dashboard, and a $50 gamified system
-            with XP and levels.
+            Check a box, keep a streak — that's the whole job. Use it free, right now, in three
+            flavors: a $10 no-frills tracker, a $25 analytics dashboard, or a $50 gamified quest
+            system with XP and levels.
           </p>
           <div class="hero-actions">
-            <a href="#tiers" class="btn btn-primary">Compare the 3 tiers</a>
-            <a href="#log" class="btn btn-ghost">See the build log</a>
+            <a href="#app" class="btn btn-primary">Launch the tracker</a>
+            <a href="#tiers" class="btn btn-ghost">See pricing &amp; tiers</a>
           </div>
         </div>
         <div class="hero-visual">
@@ -726,6 +883,222 @@
     </div>
   </section>
 
+  <section id="app" class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-kicker">Live product</span>
+        <h2 class="section-title">Use the tracker — right now</h2>
+        <p class="section-sub">Not a mockup. Pick a tier, check off a habit, and your progress saves automatically in this browser.</p>
+      </div>
+
+      <div class="app-tabs" role="tablist" aria-label="Choose a tracker tier">
+        <button type="button" class="app-tab active" id="app-tab-basic" data-app="basic" role="tab" aria-selected="true" aria-controls="app-panel-basic">Basic · $10</button>
+        <button type="button" class="app-tab" id="app-tab-premium" data-app="premium" role="tab" aria-selected="false" aria-controls="app-panel-premium">Premium · $25</button>
+        <button type="button" class="app-tab" id="app-tab-deluxe" data-app="deluxe" role="tab" aria-selected="false" aria-controls="app-panel-deluxe">Deluxe · $50</button>
+      </div>
+
+      <div class="app-panel active" id="app-panel-basic" role="tabpanel" aria-labelledby="app-tab-basic">
+        <div class="panel">
+          <div class="panel-head"><h3>This week</h3><span class="mono" style="font-size:.68rem;color:var(--ink-faint)">Autosaved locally</span></div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th class="habit-cell" scope="col">Habit</th>
+                  <th scope="col" data-day="0">M</th><th scope="col" data-day="1">T</th><th scope="col" data-day="2">W</th><th scope="col" data-day="3">T</th><th scope="col" data-day="4">F</th><th scope="col" data-day="5">S</th><th scope="col" data-day="6">S</th>
+                  <th scope="col">Streak</th><th scope="col"><span class="visually-hidden">Remove</span></th>
+                </tr>
+              </thead>
+              <tbody id="bas-body"></tbody>
+            </table>
+          </div>
+          <form class="app-add-row" id="bas-add-form">
+            <label for="bas-new-name" class="visually-hidden">New habit name</label>
+            <input type="text" id="bas-new-name" placeholder="Add a habit&hellip;" required maxlength="40">
+            <label for="bas-new-cat" class="visually-hidden">New habit category</label>
+            <select id="bas-new-cat">
+              <option>General</option><option>Health</option><option>Mind</option><option>Work</option><option>Learning</option>
+            </select>
+            <button type="submit" class="app-btn">Add habit</button>
+          </form>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Weekly summary</h3></div>
+          <div class="summary-grid" id="bas-summary" aria-live="polite"></div>
+        </div>
+        <p class="hint">Manual streak counter, weekly % rollup &mdash; today's column is highlighted for you.</p>
+      </div>
+
+      <div class="app-panel" id="app-panel-premium" role="tabpanel" aria-labelledby="app-tab-premium" hidden>
+        <div class="app-tabs" role="tablist" aria-label="Premium dashboard sections" style="margin-bottom:20px;">
+          <button type="button" class="tab-btn active" data-tab="dashboard" role="tab" aria-selected="true">Dashboard</button>
+          <button type="button" class="tab-btn" data-tab="log" role="tab" aria-selected="false">Daily Log</button>
+          <button type="button" class="tab-btn" data-tab="review" role="tab" aria-selected="false">Monthly Review</button>
+          <button type="button" class="tab-btn" data-tab="settings" role="tab" aria-selected="false">Settings</button>
+        </div>
+
+        <div class="tab-panel active" id="prem-panel-dashboard">
+          <div class="stat-row" id="prem-stat-row" aria-live="polite" style="margin-bottom:24px;"></div>
+          <div class="grid-2">
+            <div class="panel">
+              <div class="panel-head"><h3>30-day consistency trend</h3></div>
+              <div class="panel-body"><svg class="chart" id="prem-trend-chart" viewBox="0 0 600 220" preserveAspectRatio="none"></svg></div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><h3>Completion by category</h3></div>
+              <div class="panel-body"><svg class="chart" id="prem-bar-chart" viewBox="0 0 320 220" preserveAspectRatio="xMidYMid meet"></svg></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Per-habit sparklines &middot; last 14 days</h3></div>
+            <div class="panel-body" style="padding:0;">
+              <table>
+                <thead><tr><th scope="col">Habit</th><th scope="col">14-day trend</th><th scope="col">Completion</th></tr></thead>
+                <tbody id="prem-spark-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="prem-panel-log">
+          <div class="panel">
+            <div class="panel-head"><h3>Today's log</h3><span class="mono" style="font-size:.68rem;color:var(--ink-faint)" id="prem-log-date"></span></div>
+            <div class="panel-body">
+              <div id="prem-log-habits"></div>
+              <div style="margin-top:18px;">
+                <div class="slider-row"><label for="prem-mood-slider">Mood</label><input type="range" id="prem-mood-slider" min="1" max="5" value="3"><span class="slider-val" id="prem-mood-val">3</span></div>
+                <div class="slider-row"><label for="prem-energy-slider">Energy</label><input type="range" id="prem-energy-slider" min="1" max="5" value="3"><span class="slider-val" id="prem-energy-val">3</span></div>
+              </div>
+              <button type="button" class="app-btn" id="prem-save-log-btn">Save today's log</button>
+              <p class="hint" id="prem-log-saved-hint" role="status" style="visibility:hidden;">Saved &mdash; dashboard updated.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="prem-panel-review">
+          <div class="panel">
+            <div class="panel-head"><h3>Top &amp; bottom habits &middot; auto-sorted</h3></div>
+            <div class="panel-body" style="padding:0;">
+              <table>
+                <thead><tr><th scope="col">Habit</th><th scope="col">Category</th><th scope="col">14-day completion</th></tr></thead>
+                <tbody id="prem-review-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="prem-panel-settings">
+          <div class="lock-note">🔒 Formula ranges (charts, correlation, sparklines) are protected &mdash; only habit data is editable, so nothing here breaks.</div>
+          <div class="panel">
+            <div class="panel-head"><h3>Habits</h3></div>
+            <div class="panel-body">
+              <div id="prem-settings-list"></div>
+              <form class="app-add-row" id="prem-settings-add-form" style="padding:16px 0 0;border:none;background:none;">
+                <label for="prem-settings-new-name" class="visually-hidden">New habit name</label>
+                <input type="text" id="prem-settings-new-name" placeholder="New habit&hellip;" required maxlength="40">
+                <label for="prem-settings-new-cat" class="visually-hidden">New habit category</label>
+                <select id="prem-settings-new-cat">
+                  <option>Health</option><option>Mind</option><option>Work</option><option>Learning</option><option>General</option>
+                </select>
+                <button type="submit" class="app-btn">Add habit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-panel" id="app-panel-deluxe" role="tabpanel" aria-labelledby="app-tab-deluxe" hidden>
+        <div class="panel gilded">
+          <div class="panel-head"><h3>Character sheet</h3></div>
+          <div class="panel-body">
+            <div class="sheet-top">
+              <div class="avatar" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .5-5.5 5 1.5 7-6-3.6L6 21.5l1.5-7L2 9.5 9 9z"></path></svg>
+              </div>
+              <div>
+                <div class="sheet-name" id="dlx-char-name">Adventurer</div>
+                <div class="sheet-level"><span id="dlx-char-level">Level 0</span><span class="class-chip" id="dlx-class-chip">&#9876;&#65039; Warrior</span></div>
+              </div>
+              <div style="margin-left:auto;">
+                <label class="mono" style="font-size:.66rem;color:var(--ink-faint);display:block;margin-bottom:4px;" for="dlx-class-select">Class</label>
+                <select id="dlx-class-select">
+                  <option value="warrior">&#9876;&#65039; Warrior</option>
+                  <option value="scholar">&#128218; Scholar</option>
+                  <option value="mystic">&#128302; Mystic</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="bar-label-row"><span>XP</span><span id="dlx-xp-label">0 / 100</span></div>
+            <div class="bar-track"><div class="bar-fill xp" id="dlx-xp-bar" style="width:0%"></div></div>
+
+            <div class="bar-label-row"><span>Stamina (streak)</span><span id="dlx-health-label">0 days</span></div>
+            <div class="bar-track"><div class="bar-fill health" id="dlx-health-bar" style="width:0%"></div></div>
+
+            <div class="stat-row" aria-live="polite">
+              <div class="stat-cell"><span class="stat-k">Total XP</span><span class="stat-v" id="dlx-stat-total-xp">0</span></div>
+              <div class="stat-cell"><span class="stat-k">Level</span><span class="stat-v" id="dlx-stat-level">0</span></div>
+              <div class="stat-cell"><span class="stat-k">Quests done today</span><span class="stat-v" id="dlx-stat-done">0</span></div>
+              <div class="stat-cell"><span class="stat-k">Badges</span><span class="stat-v" id="dlx-stat-badges">0</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" id="dlx-boss-panel">
+          <div class="panel-head"><h3>Boss fight</h3><span class="mono" id="dlx-boss-state" style="font-size:.68rem;color:var(--ink-faint)">In progress</span></div>
+          <div class="panel-body">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;">
+              <span style="font-size:1.8rem;" aria-hidden="true">&#128009;</span>
+              <div>
+                <div class="mono" style="font-size:.85rem;font-weight:700;">The Inconsistency Wyrm</div>
+                <div class="mono" style="font-size:.66rem;color:var(--ink-faint);" id="dlx-boss-hp-label">HP 100%</div>
+              </div>
+            </div>
+            <div class="bar-track" style="margin-bottom:0;"><div class="bar-fill boss" id="dlx-boss-bar" style="width:100%"></div></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3>Daily quests</h3><button type="button" class="app-btn app-btn-ghost" id="dlx-reset-day-btn">Reset day</button></div>
+          <div class="panel-body">
+            <div id="dlx-quest-list"></div>
+            <form class="app-add-row" id="dlx-quest-add-form" style="padding:16px 0 0;border:none;background:none;">
+              <label for="dlx-quest-new-name" class="visually-hidden">New quest name</label>
+              <input type="text" id="dlx-quest-new-name" placeholder="New quest&hellip;" required maxlength="40">
+              <label for="dlx-quest-new-xp" class="visually-hidden">New quest XP value</label>
+              <select id="dlx-quest-new-xp">
+                <option value="10">10 XP &middot; easy</option>
+                <option value="20" selected>20 XP &middot; medium</option>
+                <option value="30">30 XP &middot; hard</option>
+              </select>
+              <button type="submit" class="app-btn">Add quest</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3>Goal map</h3></div>
+          <div class="panel-body"><div class="goal-map" id="dlx-goal-map"></div></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3>Badge gallery</h3></div>
+          <div class="panel-body"><div class="badge-grid" id="dlx-badge-grid"></div></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3>Adventure log</h3></div>
+          <div class="panel-body">
+            <ul class="adv-log" id="dlx-adventure-log" aria-live="polite"></ul>
+            <p class="hint" id="dlx-log-empty">No actions yet &mdash; complete a quest to begin your log.</p>
+          </div>
+        </div>
+
+        <p class="hint">XP, levels and badges persist in this browser. Level = floor(Total XP / 100).</p>
+      </div>
+    </div>
+  </section>
+
   <section id="tiers" class="section">
     <div class="wrap">
       <div class="section-head">
@@ -755,7 +1128,7 @@
               <li>One-click "duplicate as template" delivery</li>
             </ul>
             <div class="tier-meta"><span>Build 3–5h</span><span>Ships D+3</span></div>
-            <a class="tier-demo-btn" href="basic.html">Try the live demo</a>
+            <button type="button" class="tier-demo-btn" data-launch="basic">Use it now &darr;</button>
             <button type="button" class="tier-compare-link" data-jump-col="1">See it in the comparison <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
           </div>
         </article>
@@ -780,7 +1153,7 @@
               <li>Protected formula ranges — buyers can't break it</li>
             </ul>
             <div class="tier-meta"><span>Build 8–14h</span><span>Ships D+10</span></div>
-            <a class="tier-demo-btn" href="premium.html">Try the live demo</a>
+            <button type="button" class="tier-demo-btn" data-launch="premium">Use it now &darr;</button>
             <button type="button" class="tier-compare-link" data-jump-col="2">See it in the comparison <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
           </div>
         </article>
@@ -806,7 +1179,7 @@
               <li>15–25 pg guidebook or 15–20 min walkthrough video</li>
             </ul>
             <div class="tier-meta"><span>Build 20–35h</span><span>Ships D+21</span></div>
-            <a class="tier-demo-btn" href="deluxe.html">Try the live demo</a>
+            <button type="button" class="tier-demo-btn" data-launch="deluxe">Use it now &darr;</button>
             <button type="button" class="tier-compare-link" data-jump-col="3">See it in the comparison <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
           </div>
         </article>
@@ -910,7 +1283,7 @@
         <div class="protocol-card no">
           <h3><span class="stamp">✕</span> Do not over-invest</h3>
           <ul>
-            <li>No real animated app for Deluxe — Notion and good formulas already reads as "gamified."</li>
+            <li>No backend or accounts — everything runs and saves right in your browser, so it stays fast, private, and simple.</li>
             <li>No hand-built Excel version of Premium until Basic proves people are buying.</li>
             <li>No skipping the fresh-duplicate test — it's the number one source of refund requests.</li>
           </ul>
@@ -932,7 +1305,7 @@
 <footer class="site-footer">
   <div class="wrap footer-inner">
     <div><span class="brand-mark"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 3a1 1 0 1 0 0 2h1v5.28L4.9 19.2A2 2 0 0 0 6.6 22.3h10.8a2 2 0 0 0 1.7-3.1L14 10.28V5h1a1 1 0 1 0 0-2H9z"></path></svg></span> <span class="brand-text">THE HABITS LAB</span></div>
-    <p>Three tiers. One system. Built in Notion &amp; Google Sheets.</p>
+    <p>Three tiers. One system. Runs entirely in your browser.</p>
   </div>
 </footer>
 
@@ -1049,6 +1422,632 @@
       };
       requestAnimationFrame(step);
     });
+
+    // ---------- App tier switcher ----------
+    const appTabs = document.querySelectorAll(".app-tab");
+    const appPanels = document.querySelectorAll(".app-panel");
+    function switchApp(name) {
+      appTabs.forEach((t) => {
+        const isActive = t.dataset.app === name;
+        t.classList.toggle("active", isActive);
+        t.setAttribute("aria-selected", String(isActive));
+      });
+      appPanels.forEach((p) => {
+        const isActive = p.id === "app-panel-" + name;
+        p.classList.toggle("active", isActive);
+        p.hidden = !isActive;
+      });
+    }
+    appTabs.forEach((t) => t.addEventListener("click", () => switchApp(t.dataset.app)));
+
+    document.querySelectorAll(".tier-demo-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        switchApp(btn.dataset.launch);
+        document.getElementById("app").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    // ---------- Basic tracker ----------
+    function initBasicApp() {
+      const STORAGE_KEY = "habitslab_basic_v1";
+      const DAY_LABELS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+      const defaultHabits = [
+        { id: 1, name: "Morning run", cat: "Health", checks: [true,true,true,false,true,true,false], streak: 12 },
+        { id: 2, name: "Read 20 pages", cat: "Learning", checks: [true,true,true,true,true,false,false], streak: 8 },
+        { id: 3, name: "Meditate", cat: "Mind", checks: [true,true,true,true,true,true,true], streak: 21 },
+      ];
+      function load() {
+        try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) return JSON.parse(raw); } catch (e) {}
+        return { habits: defaultHabits, nextId: 4 };
+      }
+      function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+      let state = load();
+
+      const body = document.getElementById("bas-body");
+      const summary = document.getElementById("bas-summary");
+      const todayIdx = (new Date().getDay() + 6) % 7;
+      document.querySelectorAll('#app-panel-basic thead th[data-day]').forEach((th) => {
+        if (parseInt(th.dataset.day, 10) === todayIdx) th.classList.add("today-col");
+      });
+
+      function render() {
+        body.innerHTML = "";
+        state.habits.forEach((h) => {
+          const tr = document.createElement("tr");
+          tr.className = "bas-row";
+
+          const nameTd = document.createElement("td");
+          nameTd.className = "habit-cell";
+          nameTd.innerHTML = '<span class="habit-name"></span><span class="habit-cat"></span>';
+          nameTd.querySelector(".habit-name").textContent = h.name;
+          nameTd.querySelector(".habit-cat").textContent = h.cat;
+          tr.appendChild(nameTd);
+
+          h.checks.forEach((on, i) => {
+            const td = document.createElement("td");
+            if (i === todayIdx) td.classList.add("today-col");
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "app-chk" + (on ? " on" : "");
+            btn.setAttribute("aria-pressed", String(on));
+            btn.setAttribute("aria-label", DAY_LABELS[i] + ", " + h.name);
+            btn.addEventListener("click", () => {
+              const turningOn = !h.checks[i];
+              h.checks[i] = turningOn;
+              h.streak = Math.max(0, h.streak + (turningOn ? 1 : -1));
+              const nowFull = h.checks.every(Boolean);
+              save();
+              render();
+              const rowIndex = state.habits.indexOf(h);
+              const rowEl = body.children[rowIndex];
+              if (rowEl) {
+                const streakEl = rowEl.querySelector(".streak-val");
+                if (streakEl) {
+                  streakEl.classList.add("bump");
+                  setTimeout(() => streakEl.classList.remove("bump"), 500);
+                }
+              }
+              if (turningOn && nowFull) {
+                if (rowEl) {
+                  rowEl.classList.add("flash");
+                  rowEl.addEventListener("animationend", () => rowEl.classList.remove("flash"), { once: true });
+                }
+              }
+            });
+            td.appendChild(btn);
+            tr.appendChild(td);
+          });
+
+          const streakTd = document.createElement("td");
+          streakTd.innerHTML = '<span class="streak-val">' + h.streak + "</span>";
+          tr.appendChild(streakTd);
+
+          const delTd = document.createElement("td");
+          const delBtn = document.createElement("button");
+          delBtn.type = "button";
+          delBtn.className = "app-del-btn";
+          delBtn.setAttribute("aria-label", "Remove " + h.name);
+          delBtn.textContent = "✕";
+          delBtn.addEventListener("click", () => { state.habits = state.habits.filter((x) => x.id !== h.id); save(); render(); });
+          delTd.appendChild(delBtn);
+          tr.appendChild(delTd);
+
+          body.appendChild(tr);
+        });
+
+        summary.innerHTML = "";
+        const totalBoxes = state.habits.length * 7;
+        const totalChecked = state.habits.reduce((sum, h) => sum + h.checks.filter(Boolean).length, 0);
+        const overallPct = totalBoxes ? Math.round((totalChecked / totalBoxes) * 100) : 0;
+        const overallCell = document.createElement("div");
+        overallCell.className = "summary-cell";
+        overallCell.innerHTML =
+          '<span class="stat-k">Overall complete</span><span class="stat-v">' + overallPct + '%</span>' +
+          '<div class="bar-track" style="margin:8px 0 0;"><div class="bar-fill" style="width:' + overallPct + '%;background:linear-gradient(90deg,var(--accent-strong),var(--accent));"></div></div>';
+        summary.appendChild(overallCell);
+        state.habits.forEach((h) => {
+          const pct = Math.round((h.checks.filter(Boolean).length / 7) * 100);
+          const cell = document.createElement("div");
+          cell.className = "summary-cell";
+          cell.innerHTML =
+            '<span class="stat-k"></span><span class="stat-v" style="font-size:1.1rem;color:var(--ink);"></span>' +
+            '<div class="bar-track" style="margin:8px 0 0;"><div class="bar-fill" style="width:' + pct + '%;background:linear-gradient(90deg,var(--accent-strong),var(--accent));"></div></div>';
+          cell.querySelector(".stat-k").textContent = h.name;
+          cell.querySelector(".stat-v").textContent = pct + "%";
+          summary.appendChild(cell);
+        });
+      }
+
+      document.getElementById("bas-add-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const nameInput = document.getElementById("bas-new-name");
+        const catSelect = document.getElementById("bas-new-cat");
+        const name = nameInput.value.trim();
+        if (!name) return;
+        state.habits.push({ id: state.nextId++, name, cat: catSelect.value, checks: [false,false,false,false,false,false,false], streak: 0 });
+        nameInput.value = "";
+        save();
+        render();
+      });
+
+      render();
+    }
+
+    // ---------- Premium tracker ----------
+    function initPremiumApp() {
+      const STORAGE_KEY = "habitslab_premium_v1";
+      const CATS = ["Health","Mind","Work","Learning","General"];
+      const root = document.getElementById("app-panel-premium");
+
+      function seededRand(seed) {
+        let s = seed;
+        return function () { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+      }
+      function buildDefaultState() {
+        const rand = seededRand(42);
+        const habits = [
+          { id: 1, name: "Morning run", cat: "Health" },
+          { id: 2, name: "Read 20 pages", cat: "Learning" },
+          { id: 3, name: "Meditate", cat: "Mind" },
+          { id: 4, name: "Deep work block", cat: "Work" },
+        ];
+        const days = [];
+        const today = new Date();
+        for (let i = 29; i >= 0; i--) {
+          const d = new Date(today);
+          d.setDate(d.getDate() - i);
+          const wave = Math.sin(i / 4) * 0.5 + 0.5;
+          const mood = Math.max(1, Math.min(5, Math.round(2.5 + wave * 2 + (rand() - 0.5))));
+          const energy = Math.max(1, Math.min(5, Math.round(2.5 + wave * 1.8 + (rand() - 0.5))));
+          const completion = Math.max(0, Math.min(100, Math.round(40 + wave * 45 + (rand() - 0.5) * 20)));
+          days.push({ date: d.toISOString().slice(0, 10), mood, energy, completion });
+        }
+        habits.forEach((h) => {
+          h.checks = days.slice(-14).map((d) => Math.random() < d.completion / 100 || seededRand(h.id * 7)() < d.completion / 130);
+        });
+        return { habits, days, nextId: 5 };
+      }
+      function load() {
+        try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) return JSON.parse(raw); } catch (e) {}
+        return buildDefaultState();
+      }
+      function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+      let state = load();
+
+      function pearson(xs, ys) {
+        const n = xs.length;
+        if (n < 2) return 0;
+        const mx = xs.reduce((a, b) => a + b, 0) / n;
+        const my = ys.reduce((a, b) => a + b, 0) / n;
+        let num = 0, dx = 0, dy = 0;
+        for (let i = 0; i < n; i++) {
+          num += (xs[i] - mx) * (ys[i] - my);
+          dx += (xs[i] - mx) ** 2;
+          dy += (ys[i] - my) ** 2;
+        }
+        const denom = Math.sqrt(dx * dy);
+        return denom === 0 ? 0 : num / denom;
+      }
+      function habitCompletionPct(h, n) {
+        const arr = h.checks.slice(-n);
+        if (!arr.length) return 0;
+        return Math.round((arr.filter(Boolean).length / arr.length) * 100);
+      }
+
+      root.querySelectorAll(".tab-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          root.querySelectorAll(".tab-btn").forEach((b) => { b.classList.remove("active"); b.setAttribute("aria-selected", "false"); });
+          btn.classList.add("active");
+          btn.setAttribute("aria-selected", "true");
+          root.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
+          document.getElementById("prem-panel-" + btn.dataset.tab).classList.add("active");
+          if (btn.dataset.tab === "log") renderLog();
+        });
+      });
+
+      function renderDashboard() {
+        const days = state.days;
+        const avgCompletion = Math.round(days.reduce((s, d) => s + d.completion, 0) / days.length);
+        const moodArr = days.map((d) => d.mood);
+        const compArr = days.map((d) => d.completion);
+        const corr = pearson(moodArr, compArr);
+        const bestStreak = Math.max(...state.habits.map((h) => {
+          let streak = 0, best = 0;
+          h.checks.forEach((c) => { streak = c ? streak + 1 : 0; best = Math.max(best, streak); });
+          return best;
+        }));
+
+        document.getElementById("prem-stat-row").innerHTML =
+          '<div class="stat-cell"><span class="stat-k">30-day avg completion</span><span class="stat-v">' + avgCompletion + '%</span></div>' +
+          '<div class="stat-cell"><span class="stat-k">Mood &harr; completion (r)</span><span class="stat-v">' + corr.toFixed(2) + '</span></div>' +
+          '<div class="stat-cell"><span class="stat-k">Best current streak</span><span class="stat-v">' + bestStreak + '</span></div>' +
+          '<div class="stat-cell"><span class="stat-k">Habits tracked</span><span class="stat-v">' + state.habits.length + '</span></div>';
+
+        const w = 600, h = 220, pad = 20;
+        const pts = days.map((d, i) => {
+          const x = pad + (i / (days.length - 1)) * (w - pad * 2);
+          const y = h - pad - (d.completion / 100) * (h - pad * 2);
+          return [x, y];
+        });
+        const linePath = pts.map((p, i) => (i === 0 ? "M" : "L") + p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ");
+        const areaPath = linePath + " L" + pts[pts.length - 1][0].toFixed(1) + "," + (h - pad) + " L" + pts[0][0].toFixed(1) + "," + (h - pad) + " Z";
+        let gridLines = "";
+        for (let g = 0; g <= 4; g++) {
+          const y = pad + (g / 4) * (h - pad * 2);
+          gridLines += '<line class="chart-axis" x1="' + pad + '" y1="' + y + '" x2="' + (w - pad) + '" y2="' + y + '"></line>';
+        }
+        document.getElementById("prem-trend-chart").innerHTML =
+          '<defs><linearGradient id="prem-area-grad" x1="0" y1="0" x2="0" y2="1">' +
+          '<stop offset="0%" stop-color="#ff2e42" stop-opacity="0.55"/><stop offset="100%" stop-color="#ff2e42" stop-opacity="0"/>' +
+          '</linearGradient></defs>' + gridLines +
+          '<path class="chart-area" fill="url(#prem-area-grad)" d="' + areaPath + '"></path>' +
+          '<path class="chart-line" d="' + linePath + '"></path>' +
+          '<circle class="chart-dot" cx="' + pts[pts.length - 1][0].toFixed(1) + '" cy="' + pts[pts.length - 1][1].toFixed(1) + '" r="3.5"></circle>';
+
+        const byCat = {};
+        state.habits.forEach((hh) => {
+          byCat[hh.cat] = byCat[hh.cat] || [];
+          byCat[hh.cat].push(habitCompletionPct(hh, 14));
+        });
+        const cats = Object.keys(byCat);
+        const bw = 320, bh = 220, bpad = 26;
+        const barW = cats.length ? (bw - bpad * 2) / cats.length * 0.6 : 0;
+        const gap = cats.length ? (bw - bpad * 2) / cats.length : 0;
+        let bars = "";
+        cats.forEach((c, i) => {
+          const avg = Math.round(byCat[c].reduce((a, b) => a + b, 0) / byCat[c].length);
+          const barH = (avg / 100) * (bh - bpad * 2);
+          const x = bpad + i * gap + (gap - barW) / 2;
+          const y = bh - bpad - barH;
+          bars += '<rect class="bar-rect" x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + barW.toFixed(1) + '" height="' + barH.toFixed(1) + '"></rect>';
+          bars += '<text class="bar-value" x="' + (x + barW / 2).toFixed(1) + '" y="' + (y - 6).toFixed(1) + '" text-anchor="middle">' + avg + '%</text>';
+          bars += '<text class="bar-label" x="' + (x + barW / 2).toFixed(1) + '" y="' + (bh - bpad + 14) + '" text-anchor="middle">' + c + '</text>';
+        });
+        document.getElementById("prem-bar-chart").setAttribute("viewBox", "0 0 " + bw + " " + bh);
+        document.getElementById("prem-bar-chart").innerHTML = '<line class="chart-axis" x1="' + bpad + '" y1="' + (bh - bpad) + '" x2="' + (bw - bpad) + '" y2="' + (bh - bpad) + '"></line>' + bars;
+
+        const sparkBody = document.getElementById("prem-spark-body");
+        sparkBody.innerHTML = "";
+        state.habits.forEach((hh) => {
+          const arr = hh.checks.slice(-14);
+          const sw = 90, sh = 26, step = arr.length > 1 ? sw / (arr.length - 1) : sw;
+          const sPts = arr.map((c, i) => [i * step, sh - (c ? sh - 3 : 3)]);
+          const pct = habitCompletionPct(hh, 14);
+          const tr = document.createElement("tr");
+          tr.innerHTML =
+            "<td>" + hh.name + "</td>" +
+            '<td class="spark-cell"><svg width="90" height="26" viewBox="0 0 90 26"><polyline points="' + sPts.map((p) => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ") + '" fill="none" stroke="#ff5164" stroke-width="1.5"></polyline></svg></td>' +
+            "<td>" + pct + "%</td>";
+          sparkBody.appendChild(tr);
+        });
+      }
+
+      function renderLog() {
+        document.getElementById("prem-log-date").textContent = new Date().toDateString();
+        const container = document.getElementById("prem-log-habits");
+        container.innerHTML = "";
+        state.habits.forEach((hh) => {
+          const today = hh._todayChecked !== undefined ? hh._todayChecked : (hh.checks[hh.checks.length - 1] || false);
+          hh._todayChecked = today;
+          const row = document.createElement("div");
+          row.className = "log-habit-row";
+          row.innerHTML = '<button type="button" class="app-chk' + (today ? " on" : "") + '" aria-pressed="' + today + '" aria-label="Toggle ' + hh.name + ' for today"></button><span>' + hh.name + "</span>";
+          row.querySelector(".app-chk").addEventListener("click", (e) => {
+            hh._todayChecked = !hh._todayChecked;
+            e.target.classList.toggle("on", hh._todayChecked);
+            e.target.setAttribute("aria-pressed", String(hh._todayChecked));
+          });
+          container.appendChild(row);
+        });
+      }
+
+      ["mood", "energy"].forEach((k) => {
+        const slider = document.getElementById("prem-" + k + "-slider");
+        const val = document.getElementById("prem-" + k + "-val");
+        slider.addEventListener("input", () => { val.textContent = slider.value; });
+      });
+
+      document.getElementById("prem-save-log-btn").addEventListener("click", () => {
+        const mood = parseInt(document.getElementById("prem-mood-slider").value, 10);
+        const energy = parseInt(document.getElementById("prem-energy-slider").value, 10);
+        const checkedCount = state.habits.filter((h) => h._todayChecked).length;
+        const completion = state.habits.length ? Math.round((checkedCount / state.habits.length) * 100) : 0;
+        const today = new Date().toISOString().slice(0, 10);
+
+        if (state.days.length && state.days[state.days.length - 1].date === today) {
+          state.days[state.days.length - 1] = { date: today, mood, energy, completion };
+        } else {
+          state.days.push({ date: today, mood, energy, completion });
+          if (state.days.length > 30) state.days.shift();
+        }
+        state.habits.forEach((h) => {
+          const last = h.checks[h.checks.length - 1];
+          if (h._todayChecked !== last || h.checks.length < 14) {
+            h.checks.push(!!h._todayChecked);
+            if (h.checks.length > 14) h.checks.shift();
+          }
+        });
+        save();
+        renderDashboard();
+        renderReview();
+        const hint = document.getElementById("prem-log-saved-hint");
+        hint.style.visibility = "visible";
+        setTimeout(() => { hint.style.visibility = "hidden"; }, 2200);
+      });
+
+      function renderReview() {
+        const rows = state.habits.map((h) => ({ h, pct: habitCompletionPct(h, 14) })).sort((a, b) => b.pct - a.pct);
+        const body = document.getElementById("prem-review-body");
+        body.innerHTML = "";
+        rows.forEach((r, i) => {
+          const tr = document.createElement("tr");
+          if (i === 0) tr.className = "top-row";
+          if (i === rows.length - 1 && rows.length > 1) tr.className = "bottom-row";
+          tr.innerHTML = "<td>" + r.h.name + (i === 0 ? " &uarr; top" : (i === rows.length - 1 && rows.length > 1 ? " &darr; needs work" : "")) + "</td><td>" + r.h.cat + "</td><td>" + r.pct + "%</td>";
+          body.appendChild(tr);
+        });
+      }
+
+      function renderSettings() {
+        const list = document.getElementById("prem-settings-list");
+        list.innerHTML = "";
+        state.habits.forEach((h) => {
+          const row = document.createElement("div");
+          row.className = "settings-row";
+          row.innerHTML = '<span></span><select class="mono" aria-label="Category for ' + h.name + '"></select><button type="button" class="app-del-btn" aria-label="Remove ' + h.name + '">✕</button>';
+          row.querySelector("span").textContent = h.name;
+          const sel = row.querySelector("select");
+          CATS.forEach((c) => {
+            const opt = document.createElement("option");
+            opt.value = c; opt.textContent = c;
+            if (c === h.cat) opt.selected = true;
+            sel.appendChild(opt);
+          });
+          sel.addEventListener("change", () => { h.cat = sel.value; save(); renderDashboard(); renderReview(); });
+          row.querySelector(".app-del-btn").addEventListener("click", () => {
+            state.habits = state.habits.filter((x) => x.id !== h.id);
+            save();
+            renderSettings(); renderDashboard(); renderReview();
+          });
+          list.appendChild(row);
+        });
+      }
+
+      document.getElementById("prem-settings-add-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const nameInput = document.getElementById("prem-settings-new-name");
+        const catSelect = document.getElementById("prem-settings-new-cat");
+        const name = nameInput.value.trim();
+        if (!name) return;
+        state.habits.push({ id: state.nextId++, name, cat: catSelect.value, checks: new Array(14).fill(false) });
+        nameInput.value = "";
+        save();
+        renderSettings(); renderDashboard(); renderReview();
+      });
+
+      renderDashboard();
+      renderReview();
+      renderSettings();
+    }
+
+    // ---------- Deluxe tracker (RPG) ----------
+    function initDeluxeApp() {
+      const STORAGE_KEY = "habitslab_deluxe_v1";
+      const BADGES = [
+        { xp: 50, name: "First Blood", icon: "⚔️" },
+        { xp: 150, name: "Committed", icon: "🔥" },
+        { xp: 300, name: "Iron Will", icon: "🛡️" },
+        { xp: 600, name: "Legend", icon: "👑" },
+        { xp: 1000, name: "Boss Slayer", icon: "🐉" },
+      ];
+      const GOALS = [
+        { xp: 100, name: "Milestone I — Find your footing" },
+        { xp: 300, name: "Milestone II — Build the streak" },
+        { xp: 600, name: "Milestone III — Master the habit" },
+        { xp: 1000, name: "BOSS GOAL — Full transformation" },
+      ];
+      const CLASS_META = {
+        warrior: { emoji: "⚔️", label: "Warrior" },
+        scholar: { emoji: "📚", label: "Scholar" },
+        mystic: { emoji: "🔮", label: "Mystic" },
+      };
+
+      function defaultState() {
+        return {
+          name: "Adventurer",
+          klass: "warrior",
+          totalXP: 0,
+          currentStreak: 0,
+          nextId: 4,
+          quests: [
+            { id: 1, name: "Morning run", xp: 20, cat: "Health", done: false },
+            { id: 2, name: "Read 20 pages", xp: 10, cat: "Learning", done: false },
+            { id: 3, name: "Meditate", xp: 15, cat: "Mind", done: false },
+          ],
+          log: [],
+        };
+      }
+      function load() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) { const s = JSON.parse(raw); if (!s.log) s.log = []; if (!s.klass) s.klass = "warrior"; return s; }
+        } catch (e) {}
+        return defaultState();
+      }
+      function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+      let state = load();
+
+      function level() { return Math.floor(state.totalXP / 100); }
+      function addLog(text) { state.log.unshift({ ts: Date.now(), text }); if (state.log.length > 20) state.log.length = 20; }
+
+      function floatXP(x, y, amount) {
+        const el = document.createElement("div");
+        el.className = "xp-float";
+        el.textContent = (amount > 0 ? "+" : "") + amount + " XP";
+        el.style.left = x + "px";
+        el.style.top = y + "px";
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 1000);
+      }
+
+      function showLevelUp(newLevel) {
+        const el = document.createElement("div");
+        el.className = "levelup-toast";
+        el.setAttribute("role", "status");
+        el.setAttribute("aria-live", "assertive");
+        el.textContent = "⭐ Level up — you are now Level " + newLevel + "!";
+        document.body.appendChild(el);
+        requestAnimationFrame(() => el.classList.add("show"));
+        setTimeout(() => { el.classList.remove("show"); setTimeout(() => el.remove(), 350); }, 2400);
+      }
+
+      function render() {
+        document.getElementById("dlx-char-name").textContent = state.name;
+        const lvl = level();
+        document.getElementById("dlx-char-level").textContent = "Level " + lvl;
+        document.getElementById("dlx-stat-level").textContent = lvl;
+        document.getElementById("dlx-stat-total-xp").textContent = state.totalXP;
+        const meta = CLASS_META[state.klass] || CLASS_META.warrior;
+        document.getElementById("dlx-class-chip").textContent = meta.emoji + " " + meta.label;
+        const classSelect = document.getElementById("dlx-class-select");
+        if (classSelect.value !== state.klass) classSelect.value = state.klass;
+
+        const xpIntoLevel = state.totalXP % 100;
+        document.getElementById("dlx-xp-label").textContent = xpIntoLevel + " / 100";
+        document.getElementById("dlx-xp-bar").style.width = xpIntoLevel + "%";
+
+        const healthPct = Math.min(100, Math.round((state.currentStreak / 30) * 100));
+        document.getElementById("dlx-health-label").textContent = state.currentStreak + " day" + (state.currentStreak === 1 ? "" : "s");
+        document.getElementById("dlx-health-bar").style.width = healthPct + "%";
+
+        const doneToday = state.quests.filter((q) => q.done).length;
+        document.getElementById("dlx-stat-done").textContent = doneToday + " / " + state.quests.length;
+
+        const unlockedBadges = BADGES.filter((b) => state.totalXP >= b.xp).length;
+        document.getElementById("dlx-stat-badges").textContent = unlockedBadges + " / " + BADGES.length;
+
+        const bossHP = Math.max(0, 100 - Math.min(100, Math.round((state.totalXP / 1000) * 100)));
+        document.getElementById("dlx-boss-bar").style.width = bossHP + "%";
+        const defeated = state.totalXP >= 1000;
+        document.getElementById("dlx-boss-hp-label").textContent = defeated ? "Defeated" : "HP " + bossHP + "%";
+        document.getElementById("dlx-boss-state").textContent = defeated ? "🐉 Slain" : "In progress";
+        document.getElementById("dlx-boss-panel").classList.toggle("gilded", defeated);
+
+        const questList = document.getElementById("dlx-quest-list");
+        questList.innerHTML = "";
+        state.quests.forEach((q) => {
+          const row = document.createElement("div");
+          row.className = "quest-row";
+          row.innerHTML =
+            '<button type="button" class="quest-chk' + (q.done ? " on" : "") + '" aria-pressed="' + q.done + '" aria-label="Complete quest: ' + q.name + '"></button>' +
+            '<span class="quest-name' + (q.done ? " done" : "") + '"></span>' +
+            '<span class="quest-cat"></span>' +
+            '<span class="quest-xp">' + q.xp + ' XP</span>' +
+            '<button type="button" class="app-del-btn" aria-label="Remove quest: ' + q.name + '">✕</button>';
+          row.querySelector(".quest-name").textContent = q.name;
+          row.querySelector(".quest-cat").textContent = q.cat;
+          const chk = row.querySelector(".quest-chk");
+          chk.addEventListener("click", (e) => {
+            const prevXP = state.totalXP;
+            const prevLevel = Math.floor(prevXP / 100);
+            const turningOn = !q.done;
+            q.done = turningOn;
+            state.totalXP = Math.max(0, state.totalXP + (turningOn ? q.xp : -q.xp));
+            state.currentStreak = Math.max(0, state.currentStreak + (turningOn ? 1 : -1));
+            const newXP = state.totalXP;
+            const newLevel = Math.floor(newXP / 100);
+            addLog((turningOn ? "+" : "-") + q.xp + " XP — " + (turningOn ? "Completed" : "Unchecked") + " “" + q.name + "”");
+            if (turningOn) {
+              BADGES.forEach((b) => { if (prevXP < b.xp && newXP >= b.xp) addLog("🏅 Badge unlocked: " + b.name); });
+              if (prevXP < 1000 && newXP >= 1000) addLog("🐉 Boss defeated — full transformation achieved!");
+              if (newLevel > prevLevel) { addLog("⭐ Reached Level " + newLevel); showLevelUp(newLevel); }
+            }
+            const rect = e.target.getBoundingClientRect();
+            if (turningOn) floatXP(rect.left, rect.top, q.xp);
+            save();
+            render();
+          });
+          row.querySelector(".app-del-btn").addEventListener("click", () => { state.quests = state.quests.filter((x) => x.id !== q.id); save(); render(); });
+          questList.appendChild(row);
+        });
+
+        const goalMap = document.getElementById("dlx-goal-map");
+        goalMap.innerHTML = "";
+        GOALS.forEach((g, i) => {
+          const reached = state.totalXP >= g.xp;
+          const tier = document.createElement("div");
+          tier.className = "goal-tier" + (reached ? " reached" : "");
+          tier.innerHTML =
+            '<div class="goal-tier-head"><span class="goal-tier-name">' + (reached ? "✅ " : "") + g.name + '</span><span class="goal-tier-xp">' + g.xp + ' XP</span></div>' +
+            '<div class="bar-track" style="margin-bottom:0;height:8px;"><div class="bar-fill xp" style="width:' + Math.min(100, Math.round((state.totalXP / g.xp) * 100)) + '%"></div></div>';
+          goalMap.appendChild(tier);
+          if (i < GOALS.length - 1) {
+            const arrow = document.createElement("div");
+            arrow.className = "goal-arrow";
+            arrow.textContent = "↓";
+            goalMap.appendChild(arrow);
+          }
+        });
+
+        const badgeGrid = document.getElementById("dlx-badge-grid");
+        badgeGrid.innerHTML = "";
+        BADGES.forEach((b) => {
+          const unlocked = state.totalXP >= b.xp;
+          const el = document.createElement("div");
+          el.className = "badge" + (unlocked ? " unlocked" : "");
+          el.innerHTML = '<div class="badge-icon" aria-hidden="true">' + b.icon + '</div><div class="badge-name">' + b.name + '</div><div class="badge-req">' + (unlocked ? "Unlocked" : b.xp + " XP") + '</div>';
+          badgeGrid.appendChild(el);
+        });
+
+        const logEl = document.getElementById("dlx-adventure-log");
+        const emptyHint = document.getElementById("dlx-log-empty");
+        logEl.innerHTML = "";
+        if (!state.log.length) {
+          emptyHint.style.display = "block";
+        } else {
+          emptyHint.style.display = "none";
+          state.log.slice(0, 8).forEach((entry) => {
+            const li = document.createElement("li");
+            const timeStr = new Date(entry.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+            li.innerHTML = "<span></span><time></time>";
+            li.querySelector("span").textContent = entry.text;
+            li.querySelector("time").textContent = timeStr;
+            logEl.appendChild(li);
+          });
+        }
+      }
+
+      document.getElementById("dlx-quest-add-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const nameInput = document.getElementById("dlx-quest-new-name");
+        const xpSelect = document.getElementById("dlx-quest-new-xp");
+        const name = nameInput.value.trim();
+        if (!name) return;
+        state.quests.push({ id: state.nextId++, name, xp: parseInt(xpSelect.value, 10), cat: "General", done: false });
+        nameInput.value = "";
+        save();
+        render();
+      });
+
+      document.getElementById("dlx-reset-day-btn").addEventListener("click", () => {
+        state.quests.forEach((q) => { q.done = false; });
+        addLog("🌅 New day — quests reset");
+        save();
+        render();
+      });
+
+      document.getElementById("dlx-class-select").addEventListener("change", (e) => {
+        state.klass = e.target.value;
+        save();
+        render();
+      });
+
+      render();
+    }
+
+    initBasicApp();
+    initPremiumApp();
+    initDeluxeApp();
   });
 </script>
 </body>
