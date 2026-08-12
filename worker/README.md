@@ -30,7 +30,7 @@ wrangler kv namespace create UNLOCKS
 
 # 2. Set secrets (never commit these)
 wrangler secret put SHOPIFY_WEBHOOK_SECRET   # from step 4 below
-wrangler secret put ALLOWED_ORIGIN            # e.g. https://yourname.github.io
+wrangler secret put ALLOWED_ORIGIN            # https://app.habitwell.com
 
 # 3. Deploy
 wrangler deploy
@@ -62,15 +62,13 @@ wrangler deploy
    {% if tier != "" %}
      <div style="margin-top:24px;padding:24px;border:1px solid #2a2a2b;background:#0c0c0d;text-align:center;font-family:sans-serif;">
        <p style="color:#f4f1ee;margin:0 0 14px;">Your {{ tier_label }} tracker is ready.</p>
-       <a href="https://YOUR-SITE-URL/?order={{ checkout.order_id }}#app"
+       <a href="https://app.habitwell.com/?order={{ checkout.order_id }}#app"
           style="display:inline-block;font-family:monospace;text-transform:uppercase;letter-spacing:.06em;padding:12px 22px;background:#ff2e42;color:#0a0a0a;text-decoration:none;">
          Access your {{ tier_label }} tracker →
        </a>
      </div>
    {% endif %}
    ```
-
-   Replace `YOUR-SITE-URL` with the real public URL of the site.
 
 ## Then, in `index.html`
 

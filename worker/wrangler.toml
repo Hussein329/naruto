@@ -12,4 +12,4 @@ id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
 # (value comes from Shopify admin when you create the webhook — never commit it)
 
 # Set with: wrangler secret put ALLOWED_ORIGIN
-# (the public URL of your HabitWell site, e.g. https://yourname.github.io)
+# (the public URL of your HabitWell site: https://app.habitwell.com)
